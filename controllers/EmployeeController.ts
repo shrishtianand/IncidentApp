@@ -1,5 +1,5 @@
 import { Request, Response} from 'express';
-import { Employee } from '../models/employee';
+import { Employee } from '../models/EmployeeModel';
 import { createData,saveData,deleteData } from '../utility/utils';
 import { statusCodes,empMessages } from '../utility/constants';
 import csv from 'csv-parser';

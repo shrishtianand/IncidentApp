@@ -8,6 +8,24 @@ async function createData(model: any,data: any){
     }
 }
 
+async function getAllData(model: any,data: any){
+    try {
+        const createData = await appDataSource.getRepository(model).find(data)
+        return createData;
+    } catch (error) {
+        return "error"
+    }
+}
+
+async function getbyIDData(model: any,data: any){
+    try {
+        const createData = await appDataSource.getRepository(model).findOneBy(data)
+        return createData;
+    } catch (error) {
+        return "error"
+    }
+}
+
 async function saveData(model: any,data: any){
     try {
         const saveData = await appDataSource.getRepository(model).save(data)
@@ -30,6 +48,8 @@ async function deleteData(model: any,data: any){
 
 export {
     createData,
+    getAllData,
+    getbyIDData,
     saveData,
     deleteData
 }
