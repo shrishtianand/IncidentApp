@@ -1,5 +1,6 @@
 import { configure, getLogger }  from 'log4js';
 import path from 'path';
+import  fs from 'fs';
 
 configure({
   appenders: {
@@ -26,7 +27,20 @@ configure({
   },
 });
 
-export const logger = getLogger("index");
+async function createDir () {
+  if(!fs.existsSync('logs')){
+    try{
+      return await fs.mkdir('logs', (err) => {
+         if (err) console.log(err);
+        })
+    }catch(err){
+      console.log(err);
+    }
+  }
+}
+
+createDir();
+export const logger = getLogger("app");
 export const fileName = async (filename) => {
   const currentfilename = path.basename(filename);
   return currentfilename;

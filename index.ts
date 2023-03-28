@@ -6,7 +6,7 @@ import { gport } from './config/config';
 import empRouter from './routes/EmployeeRoute';
 import  incidentRouter from './routes/IncidentRoute';
 import { appDataSource } from './database/database';
-let fName:string;
+var fName:string;
 
 fileName(__filename).then((data)=>{
     fName = data;
