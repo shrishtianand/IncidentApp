@@ -8,5 +8,5 @@ empRouter.post("/create",validateCreateEmployee,createEmployee); //purpose:To cr
 
 empRouter.delete("/delete",validateDeleteEmployee,deleteEmployee);
 empRouter.get("/get",getAllEmployee);
-empRouter.get("/saveEmployeesFromFile",saveEmployeesFromFile); //purpose:To create a employe
+empRouter.get("/saveEmployeesFromFile",saveEmployeesFromFile); //purpose:To create a employee
 export default empRouter;

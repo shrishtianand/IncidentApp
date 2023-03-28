@@ -4,7 +4,7 @@ import {logger, fileName} from './log4';
 import bodyParser from "body-parser";
 import { gport } from './config/config';
 import empRouter from './routes/EmployeeRoute';
-import  incidentRouter from './routes/IncidentRoute';
+import incidentRouter from './routes/IncidentRoute';
 import { appDataSource } from './database/database';
 var fName:string;
 
