@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "SET NODE_ENV=development&& nodemon index.ts",
-    "dev": "SET NODE_ENV=mssql&& nodemon index.ts"
+    "dev": "SET NODE_ENV=mssql&& nodemon index.ts",
+    "postgre": "SET NODE_ENV=postgresql&& nodemon index.ts"
   },
   "keywords": [],
   "author": "",

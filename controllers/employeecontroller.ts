@@ -1,5 +1,5 @@
 import { Request, Response} from 'express';
-import { Employee } from '../models/employee';
+import { Employee } from '../models/employeemodel';
 import { createData,saveData,deleteData } from '../utility/utils';
 import { statusCodes,empMessages } from '../utility/constants';
 import csv from 'csv-parser';
@@ -74,7 +74,7 @@ async function deleteEmployee(req: Request,res: Response){
 async function saveEmployeesFromFile(req: Request,res: Response) {
         const errors = [];
         fs.createReadStream('./utility/data.csv')
-          .pipe(csv(['firstName', 'lastName','emailId','department','client','project']))
+          .pipe(csv(['firstName', 'lastName','emailID','department','client','project']))
           .on('data', async (data) => { 
             const employee = await createData(Employee,data);
             if(employee == "error"){

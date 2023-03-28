@@ -32,7 +32,7 @@ export class Incident {
     @Column("text",{nullable:true})
     impactPostSeverity: string
 
-    @Column("datetime")
+    @Column("timestamp")
     reportDateTime: string
 
     @Column("text",{nullable:true})

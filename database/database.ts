@@ -1,6 +1,6 @@
 import "reflect-metadata"
 import { DataSource } from "typeorm"
-import { Employee } from "../models/employee"
+import { Employee } from "../models/employeemodel"
 import { gDBName,gDBUsername,gDBPassword,gDBHost,gDBDialect,gDBPort } from "../config/config"
 import { Incident } from "../models/IncidentModel"
 

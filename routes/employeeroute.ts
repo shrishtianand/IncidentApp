@@ -1,6 +1,6 @@
 // Import the express in typescript file
 import express from 'express';
-import { createEmployee, deleteEmployee, saveEmployeesFromFile} from '../controllers/employee';
+import { createEmployee, deleteEmployee, saveEmployeesFromFile} from '../controllers/employeecontroller';
 import { validateCreateEmployee, validateDeleteEmployee } from '../middleware/validations';
 var empRouter  = express.Router();
 
