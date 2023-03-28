@@ -1,6 +1,6 @@
 import { Request, Response} from 'express';
 import { Employee } from '../models/EmployeeModel';
-import { createData,saveData,deleteData } from '../utility/utils';
+import { createData,getAllData,getbyIDData,saveData,deleteData } from '../utility/utils';
 import { statusCodes,empMessages } from '../utility/constants';
 import csv from 'csv-parser';
 import fs from 'fs';
@@ -71,6 +71,34 @@ async function deleteEmployee(req: Request,res: Response){
     }
 }
 
+async function getAllEmployee(req: Request,res: Response){
+    try {
+        // const user = await appDataSource.getRepository(Employee).create(req.body)
+        const employee = await getAllData(Employee,req.body);
+        if(employee == "error"){
+            return res.json({
+                status:statusCodes.error,
+                message:empMessages.empDeleteError,
+                data:null
+            })
+        }
+        else{            
+            return res.json({
+                status:statusCodes.success,
+                message:empMessages.empDeletedSuccessfully,
+                data:employee
+            })            
+        }                
+    } catch (error) {
+        return res.json({
+            status:statusCodes.error,
+            message:empMessages.empCreateError,
+            data:error
+        })        
+    }
+}
+
+
 async function saveEmployeesFromFile(req: Request,res: Response) {
         const errors = [];
         fs.createReadStream('./utility/data.csv')
@@ -107,6 +135,7 @@ async function saveEmployeesFromFile(req: Request,res: Response) {
 
 export{
     createEmployee,
+    getAllEmployee,
     deleteEmployee,
     saveEmployeesFromFile
 }
