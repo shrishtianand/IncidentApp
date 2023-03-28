@@ -1,19 +1,24 @@
 // Import the express in typescript file
 import express from 'express';
+import {logger, fileName} from './log4';
 import bodyParser from "body-parser";
 import { gport } from './config/config';
 import empRouter from './routes/EmployeeRoute';
 import  incidentRouter from './routes/IncidentRoute';
 import { appDataSource } from './database/database';
+let fName:string;
 
+fileName(__filename).then((data)=>{
+    fName = data;
+});
 // establish database connection
 appDataSource
     .initialize()
     .then(() => {
-        console.log("Data Source has been initialized!")
+        logger.info(`${fName} : Data Source has been initialized!`)
     })
     .catch((err) => {
-        console.error("Error during Data Source initialization:", err)
+        logger.error(`${fName} : Error during Data Source initialization: ${err}`)
     })
 // Initialize the express engine
 const app: express.Application = express();
@@ -25,6 +30,6 @@ app.use("/employee",empRouter);
 app.use("/incident",incidentRouter);  
 // Server setup
 app.listen(gport, () => {
-    console.log(`TypeScript with Express
+    logger.info(`${fName} TypeScript with Express
          http://localhost:${gport}/`);
 });
