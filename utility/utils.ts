@@ -14,13 +14,12 @@ class Utils{
         try {
             const createData = await appDataSource.getRepository(model).create(data)
             const returnObject: returnObject = {
-                data: createData,
+                data: [createData],
                 status: statusCodes.success,
                 message: empMessages.empCreatedSuccessfully,
             };
             return returnObject;
         } catch (error) {
-            console.log("error",error)
             logger.info(`${this.fName} : Error creating record for : ${model}`);
             const returnObject: returnObject = {
                 data: error,
