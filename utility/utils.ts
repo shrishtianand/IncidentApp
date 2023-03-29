@@ -75,7 +75,7 @@ class Utils{
         const message = defaultMessages[type];
         const returnObject: returnObject = {
             data:data,
-            status: statusCodes.error,
+            status: status,
             message: `${model}${message}`,
         };
         return returnObject;
