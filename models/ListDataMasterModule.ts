@@ -3,11 +3,11 @@ import { Entity, Column, PrimaryGeneratedColumn } from "typeorm"
 @Entity()
 export class ListDataMaster {
     @PrimaryGeneratedColumn()
-    ListmstId: number
+    lstMstID: number
     
     @Column("text")
-    ListCode: string
+    lstMstCode: string
 
     @Column("text")
-    ListDescription: string
+    lstMstDesc: string
 }

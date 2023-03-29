@@ -15,8 +15,5 @@ export class ProcessStep {
     sendMail: boolean
 
     @Column("text")
-    psNameEmailId: string
-
-    @Column("integer")
-    psNameEmpId: number
+    psEmailId: string
 }

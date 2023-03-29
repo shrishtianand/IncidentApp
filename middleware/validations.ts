@@ -4,7 +4,6 @@ import { statusCodes,messages,empMessages,incMessages } from '../utility/constan
 
 async function validateCreateEmployee(req: Request,res: Response, next: NextFunction){
     var ldata = req.body;
-    console.log("request data " + ldata);
     const lJoiSchema = Joi.object({
         firstName: Joi.string().required().label(empMessages.empFNameRequired),
         lastName: Joi.string().required().label(empMessages.empLNameRequired),
