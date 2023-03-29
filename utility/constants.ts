@@ -24,6 +24,8 @@ let empMessages = {
     empDepartmentRequired: 'department is required',
     empClientRequired: 'client is required',
     empProjectRequired: 'project is required',
+    empNotFound: 'employee not found',
+    getAllEmpsErr: 'Error while getting all employees',
 }
 
 let incMessages = {

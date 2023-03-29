@@ -33,18 +33,40 @@ class Utils{
     async getAllData(model: any,data: any){
         try {
             const createData = await appDataSource.getRepository(model).find(data)
-            return createData;
+            const returnObject: returnObject = {
+                data: createData,
+                status: statusCodes.success,
+                message: empMessages.empCreatedSuccessfully,
+            };
+            return returnObject;
         } catch (error) {
             logger.info(`${this.fName} : Error retriving record(s)for : ${model}`);
+            const returnObject: returnObject = {
+                data: [error],
+                status: statusCodes.error,
+                message: empMessages.getAllEmpsErr,
+            };
+            return returnObject;
         }
     }
 
     async getbyIDData(model: any,data: any){
         try {
             const createData = await appDataSource.getRepository(model).findOneBy(data)
-            return createData;
+            const returnObject: returnObject = {
+                data: [createData],
+                status: statusCodes.success,
+                message: empMessages.empCreatedSuccessfully,
+            };
+            return returnObject;
         } catch (error) {
             logger.info(`${this.fName} : Error retriving record for : ${model}`);
+            const returnObject: returnObject = {
+                data: [error],
+                status: statusCodes.error,
+                message: empMessages.empNotFound,
+            };
+            return returnObject;
         }
     }
 

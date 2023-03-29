@@ -22,4 +22,7 @@ export class Employee {
 
     @Column("text")
     project: string
+
+    @Column("boolean",{default:true})
+    foundInFile: boolean    
 }
