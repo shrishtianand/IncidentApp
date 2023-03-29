@@ -85,21 +85,49 @@ export class EmployeeController{
 
     async saveEmployeesFromFile(req: Request,res: Response) {
         try {
-            const errors = [];
+            let errors = [];
+            let employees = await Util.getAllData(Employee,{});
             fs.createReadStream('./utility/data.csv')
             .pipe(csv(['firstName', 'lastName','emailID','department','client','project']))
-            .on('data', async (data) => { 
-                const employee = await Util.createData(Employee,data);
-                if(employee.status > 299){
+            .on('data', async (data) => {
+                var index = employees.data.findIndex(x => x.emailID ===data.emailID);
+                employees.data.splice(index, 1)
+                const employeeData = await Util.getbyIDData(Employee,{emailID:data.emailID});
+                if(employeeData.status > 299){
                     errors.push(data.emailID)
                 }
-                else{
-                    const result = await Util.saveData(Employee,employee.data)
-                    if(result.status > 299){
-                        errors.push(data.emailId)
+                else if(employeeData.status == 200 && employeeData.data[0] == null){
+                    const employee = await Util.createData(Employee,data);
+                    if(employee.status > 299){
+                        errors.push(data.emailID)
                     }
-                }})
-            .on('end', () => {
+                    else{
+                        const result = await Util.saveData(Employee,employee.data[0])
+                        if(result.status > 299){
+                            errors.push(data.emailID)
+                        }
+                    }
+                }
+                else if(employeeData.status == 200 && employeeData.data[0] != null){
+                    let updateData = {
+                        ...employeeData,
+                        firstName:data.firstName,
+                        lastName:data.lastName,
+                        department:data.department,
+                        client:data.client,
+                        project:data.project,
+                        foundInFile:true
+                    }
+                    const result = await Util.saveData(Employee,updateData)
+                    if(result.status > 299){
+                        errors.push(data.emailID)
+                    }
+                }
+                else{
+                    errors.push(data.emailID)
+                }
+            })
+            .on('end', async () => {
                 if(errors.length >0){
                     const returnObject: returnObject = {
                         data: errors,
@@ -109,12 +137,32 @@ export class EmployeeController{
                     return res.json(returnObject)
                 }
                 else{
-                    const returnObject: returnObject = {
-                        data: null,
-                        status: statusCodes.success,
-                        message: empMessages.empCreatedSuccessfully,
-                    };
-                    return res.json(returnObject) 
+                    await employees.data.forEach(async (detail)=> {
+                        let updateData = {
+                            ...detail,
+                            foundInFile:false
+                        }
+                    const result = await Util.saveData(Employee,updateData)
+                        if(result.status > 299){
+                            errors.push(detail.emailID)
+                        }
+                    });
+                    if(errors.length >0){
+                        const returnObject: returnObject = {
+                            data: errors,
+                            status: statusCodes.error,
+                            message: empMessages.empCreateError,
+                        };
+                        return res.json(returnObject)
+                    }
+                    else{
+                        const returnObject: returnObject = {
+                            data: null,
+                            status: statusCodes.success,
+                            message: empMessages.empCreatedSuccessfully,
+                        };
+                        return res.json(returnObject)
+                    } 
                     }
                 });            
         } catch (error) {
