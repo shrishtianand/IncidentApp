@@ -1,7 +1,8 @@
 import { appDataSource } from "../database/database"
 import { logger, fileName } from "../log4";
+import { empMessages, returnObject, statusCodes } from "./constants";
 
-export class Utils{
+class Utils{
     fName: string;
     async file(){
         fileName(__filename).then((data)=>{
@@ -11,10 +12,22 @@ export class Utils{
     
     async createData(model: any,data: any){
         try {
-            const createData:Array<any> = await appDataSource.getRepository(model).create(data)
-            return createData;
+            const createData = await appDataSource.getRepository(model).create(data)
+            const returnObject: returnObject = {
+                data: createData,
+                status: statusCodes.success,
+                message: empMessages.empCreatedSuccessfully,
+            };
+            return returnObject;
         } catch (error) {
+            console.log("error",error)
             logger.info(`${this.fName} : Error creating record for : ${model}`);
+            const returnObject: returnObject = {
+                data: error,
+                status: statusCodes.error,
+                message: empMessages.empCreateError,
+              };
+            return returnObject;
         }
     }
 
@@ -39,10 +52,20 @@ export class Utils{
     async saveData(model: any,data: any){
         try {
             const saveData = await appDataSource.getRepository(model).save(data)
-            console.log(saveData);
-            return saveData;
+            const returnObject: returnObject = {
+                data: saveData,
+                status: statusCodes.error,
+                message: empMessages.empCreatedSuccessfully,
+              };
+            return returnObject;
         } catch (error) {
             logger.info(`${this.fName} : Error saving record for : ${model}`);
+            const returnObject: returnObject = {
+                data: error,
+                status: statusCodes.error,
+                message: empMessages.empSaveError,
+              };
+            return returnObject;
         }
     }
 
@@ -55,3 +78,5 @@ export class Utils{
         }
     }
 }
+
+export const Util = new Utils();

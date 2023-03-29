@@ -38,10 +38,17 @@ let incMessages = {
     incIncidentIDNull: 'Incident ID is null'
 }
 
+type  returnObject = {
+    status: number,
+    message: string,
+    data: Array<any>,
+};
+
 export {
     statusCodes,
     messages,
     empMessages,
-    incMessages
+    incMessages,
+    returnObject
 
 }

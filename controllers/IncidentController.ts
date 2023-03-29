@@ -1,14 +1,13 @@
 import { Request, Response} from 'express';
 import { Incident } from '../models/IncidentModel';
-import { Utils } from '../utility/utils';
+import { Util } from '../utility/utils';
 import { statusCodes,incMessages } from '../utility/constants';
 
 export class IncidentController{
-    private util:Utils = new Utils();
     async createIncident(req: Request,res: Response){
         try {            
-            const incident:Array<Incident> = await this.util.createData(Incident,req.body);
-            if(incident == null){
+            const incident = await Util.createData(Incident,req.body);
+            if(incident.status > 299){
                 return res.json({
                     status:statusCodes.error,
                     message:incMessages.incCreateError,
@@ -16,7 +15,7 @@ export class IncidentController{
                 })
             }
             else{
-                const result = await this.util.saveData(Incident,incident)
+                const result = await Util.saveData(Incident,incident)
                 if(result == null){
                     return res.json({
                         status:statusCodes.error,
@@ -46,8 +45,8 @@ export class IncidentController{
     async getIncident(req: Request,res: Response){
         try {
             // const user = await appDataSource.getRepository(Employee).create(req.body)
-            const incident:Array<Incident> = await this.util.createData(Incident,req.body);
-            if(incident == null){
+            const incident = await Util.createData(Incident,req.body);
+            if(incident.status > 299){
                 return res.json({
                     status:statusCodes.error,
                     message:incMessages.incCreateError,
@@ -55,8 +54,8 @@ export class IncidentController{
                 })
             }
             else{
-                const result = await this.util.saveData(Incident,incident)
-                if(result == "error"){
+                const result = await Util.saveData(Incident,incident)
+                if(result.status > 299){
                     return res.json({
                         status:statusCodes.error,
                         message:incMessages.incSaveError,
@@ -84,7 +83,7 @@ export class IncidentController{
     async getIncidentByID(req: Request,res: Response){
         try {
             // const user = await appDataSource.getRepository(Employee).create(req.body)
-            const incident = await this.util.getbyIDData(Incident,req.body);
+            const incident = await Util.getbyIDData(Incident,req.body);
             if(incident == null){
                 return res.json({
                     status:statusCodes.error,
@@ -93,7 +92,7 @@ export class IncidentController{
                 })
             }
             else{
-                const result = await this.util.saveData(Incident,incident)
+                const result = await Util.saveData(Incident,incident)
                 if(result == null){
                     return res.json({
                         status:statusCodes.error,
@@ -122,7 +121,7 @@ export class IncidentController{
     async getFilteredIncident(req: Request,res: Response){
         try {
             // const user = await appDataSource.getRepository(Employee).create(req.body)
-            const incident = await this.util.getAllData(Incident,req.body);
+            const incident = await Util.getAllData(Incident,req.body);
             if(incident == null){
                 return res.json({
                     status:statusCodes.error,
@@ -153,7 +152,7 @@ export class IncidentController{
     async deleteIncidentByID(req: Request,res: Response){
         try {
             // const user = await appDataSource.getRepository(Employee).create(req.body)
-            const incident = await this.util.deleteData(Incident,req.body);
+            const incident = await Util.deleteData(Incident,req.body);
             if(incident == null){
                 return res.json({
                     status:statusCodes.error,
@@ -162,7 +161,7 @@ export class IncidentController{
                 })
             }
             else{
-                const result = await this.util.deleteData(Incident,incident)
+                const result = await Util.deleteData(Incident,incident)
                 if(result == null){
                     return res.json({
                         status:statusCodes.error,

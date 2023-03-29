@@ -1,39 +1,21 @@
 import { Request, Response} from 'express';
 import { Employee } from '../models/EmployeeModel';
-import { Utils } from '../utility/utils';
-import { statusCodes,empMessages } from '../utility/constants';
+import { statusCodes,empMessages,returnObject } from '../utility/constants';
+import { Util } from '../utility/utils';
 import csv from 'csv-parser';
 import fs from 'fs';
 
 export class EmployeeController{
-    private util:Utils = new Utils();
     async  createEmployee(req: Request,res: Response){
         try {
             // const user = await appDataSource.getRepository(Employee).create(req.body)
-            const employee = await this.util.createData(Employee,req.body);
-            if(employee == null){
-                return res.json({
-                    status:statusCodes.error,
-                    message:empMessages.empCreateError,
-                    data:null
-                })
+            const employee = await Util.createData(Employee,req.body);
+            if(employee.status > 299){
+                return res.json(employee)
             }
             else{
-                const result = await this.util.saveData(Employee,employee)
-                if(result == null){
-                    return res.json({
-                        status:statusCodes.error,
-                        message:empMessages.empSaveError,
-                        data:null
-                    })
-                }
-                else{
-                    return res.json({
-                        status:statusCodes.success,
-                        message:empMessages.empCreatedSuccessfully,
-                        data:result
-                    })
-                }
+                const result = await Util.saveData(Employee,employee.data)
+                return res.json(result)
             }
                     
         } catch (error) {
@@ -48,7 +30,7 @@ export class EmployeeController{
     async deleteEmployee(req: Request,res: Response){
         try {
             // const user = await appDataSource.getRepository(Employee).create(req.body)
-            const employee = await this.util.deleteData(Employee,req.body);
+            const employee = await Util.deleteData(Employee,req.body);
             if(employee == null){
                 return res.json({
                     status:statusCodes.error,
@@ -76,7 +58,7 @@ export class EmployeeController{
     async getAllEmployee(req: Request,res: Response){
         try {
             // const user = await appDataSource.getRepository(Employee).create(req.body)
-            const employee = await this.util.getAllData(Employee,req.body);
+            const employee = await Util.getAllData(Employee,req.body);
             if(employee == null){
                 return res.json({
                     status:statusCodes.error,
@@ -102,36 +84,47 @@ export class EmployeeController{
 
 
     async saveEmployeesFromFile(req: Request,res: Response) {
+        try {
             const errors = [];
             fs.createReadStream('./utility/data.csv')
-            .pipe(csv(['firstName', 'lastName','emailId','department','client','project']))
+            .pipe(csv(['firstName', 'lastName','emailID','department','client','project']))
             .on('data', async (data) => { 
-                const employee = await this.util.createData(Employee,data);
-                if(employee == null){
-                    errors.push(data.emailId)
+                const employee = await Util.createData(Employee,data);
+                if(employee.status > 299){
+                    errors.push(data.emailID)
                 }
                 else{
-                    const result = await this.util.saveData(Employee,data)
-                    if(result == "error"){
+                    const result = await Util.saveData(Employee,employee.data)
+                    if(result.status > 299){
                         errors.push(data.emailId)
                     }
                 }})
             .on('end', () => {
                 if(errors.length >0){
-                    return res.json({
-                            status:statusCodes.error,
-                            message:empMessages.empCreateError,
-                            data:errors
-                            })
+                    const returnObject: returnObject = {
+                        data: errors,
+                        status: statusCodes.error,
+                        message: empMessages.empCreateError,
+                    };
+                    return res.json(returnObject)
                 }
                 else{
-                    return res.json({
-                                status:statusCodes.success,    
-                                message:empMessages.empCreatedSuccessfully,    
-                                data:null    
-                            }) 
+                    const returnObject: returnObject = {
+                        data: null,
+                        status: statusCodes.success,
+                        message: empMessages.empCreatedSuccessfully,
+                    };
+                    return res.json(returnObject) 
                     }
-                });    
+                });            
+        } catch (error) {
+            const returnObject: returnObject = {
+                data: error,
+                status: statusCodes.error,
+                message: empMessages.empCreateError,
+            };
+            return res.json(returnObject)            
+        }    
     }
 }     
 
