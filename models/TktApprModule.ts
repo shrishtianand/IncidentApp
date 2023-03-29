@@ -3,13 +3,13 @@ import { Entity, Column, PrimaryGeneratedColumn } from "typeorm"
 @Entity()
 export class TktAppr {
     @PrimaryGeneratedColumn()
-    tktkId: number
+    tktID: number
     
     @Column("text")
     tktName: string
 
     @Column("text")
-    tktApproveName: string
+    tktApproverID: string
 
     @Column("text")
     tktApprove: string

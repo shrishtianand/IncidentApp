@@ -3,14 +3,14 @@ import { Entity, Column, PrimaryGeneratedColumn } from "typeorm"
 @Entity()
 export class ListDataDetails {
     @PrimaryGeneratedColumn()
-    listdtid: number
+    lstDtlID: number
     
     @Column("text")
-    listdtlcode: string
+    lstDtlCode: string
 
     @Column("integer")
-    listdtldesc: number
+    lstDtlDesc: number
 
     @Column("integer")
-    listmstid: number
+    lstMstID: number
 }
