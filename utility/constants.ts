@@ -40,6 +40,17 @@ let incMessages = {
     incIncidentIDNull: 'Incident ID is null'
 }
 
+
+let defaultMessages = {
+    create: ' created successfully',
+    createerr: ' creation error ',
+    getallerr: "'(s) getting all data error",
+    getsingleerr: ' getting error',
+    saveerr: ' saving error',
+    getall: '(s) list',
+    save: ' saved successfully'
+}
+
 type  returnObject = {
     status: number,
     message: string,
@@ -51,6 +62,7 @@ export {
     messages,
     empMessages,
     incMessages,
+    defaultMessages,
     returnObject
 
 }
