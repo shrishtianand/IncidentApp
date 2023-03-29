@@ -1,6 +1,6 @@
 import { appDataSource } from "../database/database"
 import { logger, fileName } from "../log4";
-import { empMessages, returnObject, statusCodes, defaultMessages } from "./constants";
+import { returnObject, statusCodes, defaultMessages } from "./constants";
 
 class Utils{
     fName: string;

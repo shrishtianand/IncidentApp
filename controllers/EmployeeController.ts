@@ -19,39 +19,8 @@ export class EmployeeController{
             }
                     
         } catch (error) {
-            return res.json({
-                status:statusCodes.error,
-                message:empMessages.empCreateError,
-                data:error
-            })        
-        }
-    }
-
-    async deleteEmployee(req: Request,res: Response){
-        try {
-            // const user = await appDataSource.getRepository(Employee).create(req.body)
-            const employee = await Util.deleteData(Employee,req.body);
-            if(employee == null){
-                return res.json({
-                    status:statusCodes.error,
-                    message:empMessages.empDeleteError,
-                    data:null
-                })
-            }
-            else{
-                
-                return res.json({
-                    status:statusCodes.success,
-                    message:empMessages.empDeletedSuccessfully,
-                    data:"success"
-                })            
-            }                
-        } catch (error) {
-            return res.json({
-                status:statusCodes.error,
-                message:empMessages.empCreateError,
-                data:error
-            })        
+            let returnObj = await Util.returnObj([error],statusCodes.error,'Employee','createerr')
+            return res.json(returnObj)        
         }
     }
 
@@ -59,26 +28,17 @@ export class EmployeeController{
         try {
             // const user = await appDataSource.getRepository(Employee).create(req.body)
             const employee = await Util.getAllData(Employee,req.body);
-            if(employee == null){
-                return res.json({
-                    status:statusCodes.error,
-                    message:empMessages.empDeleteError,
-                    data:null
-                })
+            if(employee.status > 299){
+                let returnObj = await Util.returnObj([employee.data],statusCodes.error,'Employee','getallerr')
+                return res.json(returnObj)
             }
-            else{            
-                return res.json({
-                    status:statusCodes.success,
-                    message:empMessages.empDeletedSuccessfully,
-                    data:employee
-                })            
+            else{
+                let returnObj = await Util.returnObj(employee.data,statusCodes.error,'Employee','getall')
+                return res.json(returnObj)            
             }                
         } catch (error) {
-            return res.json({
-                status:statusCodes.error,
-                message:empMessages.empCreateError,
-                data:error
-            })        
+            let returnObj = await Util.returnObj([error],statusCodes.error,'Employee','getallerr')
+            return res.json(returnObj)        
         }
     }
 
@@ -129,12 +89,8 @@ export class EmployeeController{
             })
             .on('end', async () => {
                 if(errors.length >0){
-                    const returnObject: returnObject = {
-                        data: errors,
-                        status: statusCodes.error,
-                        message: empMessages.empCreateError,
-                    };
-                    return res.json(returnObject)
+                    let returnObj = await Util.returnObj(errors,statusCodes.error,'Employee','createerr')
+                    return res.json(returnObj)
                 }
                 else{
                     await employees.data.forEach(async (detail)=> {
@@ -148,30 +104,18 @@ export class EmployeeController{
                         }
                     });
                     if(errors.length >0){
-                        const returnObject: returnObject = {
-                            data: errors,
-                            status: statusCodes.error,
-                            message: empMessages.empCreateError,
-                        };
-                        return res.json(returnObject)
+                        let returnObj = await Util.returnObj(errors,statusCodes.error,'Employee','createerr')
+                        return res.json(returnObj)
                     }
                     else{
-                        const returnObject: returnObject = {
-                            data: null,
-                            status: statusCodes.success,
-                            message: empMessages.empCreatedSuccessfully,
-                        };
-                        return res.json(returnObject)
+                        let returnObj = await Util.returnObj(null,statusCodes.success,'Employee','create')
+                        return res.json(returnObj)
                     } 
                     }
                 });            
         } catch (error) {
-            const returnObject: returnObject = {
-                data: error,
-                status: statusCodes.error,
-                message: empMessages.empCreateError,
-            };
-            return res.json(returnObject)            
+            let returnObj = await Util.returnObj([error],statusCodes.error,'Employee','createerr')
+            return res.json(returnObj)            
         }    
     }
 }     
