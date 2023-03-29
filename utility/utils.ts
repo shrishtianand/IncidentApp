@@ -40,7 +40,7 @@ class Utils{
         let modelName = model.name;
         try {
             const createData = await appDataSource.getRepository(model).findOneBy(data)
-            let returnObject = this.returnObj([createData],statusCodes.success,modelName,'create');
+            let returnObject = this.returnObj([createData],statusCodes.success,modelName,'getsingle');
             return returnObject;
         } catch (error) {
             logger.info(`${this.fName} : Error retriving record for : ${model}`);

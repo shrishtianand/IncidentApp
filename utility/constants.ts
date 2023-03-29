@@ -48,7 +48,8 @@ let defaultMessages = {
     getsingleerr: ' getting error',
     saveerr: ' saving error',
     getall: '(s) list',
-    save: ' saved successfully'
+    save: ' saved successfully',
+    getsingle: ' details'
 }
 
 type  returnObject = {
