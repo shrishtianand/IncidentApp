@@ -13,11 +13,19 @@ class Utils{
     async createData(model: any,data: any){
         try {
             const createData = await appDataSource.getRepository(model).create(data)
-            let returnObject = await this.returnArrayObjFunction(statusCodes.success,empMessages.empCreatedSuccessfully,createData);
+            const returnObject: returnObject = {
+                data: [createData],
+                status: statusCodes.success,
+                message: empMessages.empCreatedSuccessfully,
+            };
             return returnObject;
         } catch (error) {
             logger.info(`${this.fName} : Error creating record for : ${model}`);
-            let returnObject = await this.returnArrayObjFunction(statusCodes.error,empMessages.empCreatedSuccessfully,error);
+            const returnObject: returnObject = {
+                data: [error],
+                status: statusCodes.error,
+                message: empMessages.empCreateError,
+              };
             return returnObject;
         }
     }
@@ -36,7 +44,7 @@ class Utils{
             const returnObject: returnObject = {
                 data: [error],
                 status: statusCodes.error,
-                message: empMessages.getAllEmpsErr,
+                message: empMessages.empNotFound,
             };
             return returnObject;
         }
@@ -74,7 +82,7 @@ class Utils{
         } catch (error) {
             logger.info(`${this.fName} : Error saving record for : ${model}`);
             const returnObject: returnObject = {
-                data: error,
+                data: [error],
                 status: statusCodes.error,
                 message: empMessages.empSaveError,
               };
@@ -89,16 +97,6 @@ class Utils{
         } catch (error) {
             logger.info(`${this.fName} : Error deleting record for : ${model}`);
         }
-    }
-
-    async returnArrayObjFunction(status:number,message:string,data:Array<any>){
-        const returnObject: returnObject = {
-            data: [data],
-            status: status,
-            message: message,
-        };
-
-        return returnObject;
     }
 }
 
