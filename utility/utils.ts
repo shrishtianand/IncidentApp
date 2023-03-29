@@ -13,19 +13,11 @@ class Utils{
     async createData(model: any,data: any){
         try {
             const createData = await appDataSource.getRepository(model).create(data)
-            const returnObject: returnObject = {
-                data: [createData],
-                status: statusCodes.success,
-                message: empMessages.empCreatedSuccessfully,
-            };
+            let returnObject = await this.returnArrayObjFunction(statusCodes.success,empMessages.empCreatedSuccessfully,createData);
             return returnObject;
         } catch (error) {
             logger.info(`${this.fName} : Error creating record for : ${model}`);
-            const returnObject: returnObject = {
-                data: error,
-                status: statusCodes.error,
-                message: empMessages.empCreateError,
-              };
+            let returnObject = await this.returnArrayObjFunction(statusCodes.error,empMessages.empCreatedSuccessfully,error);
             return returnObject;
         }
     }
@@ -97,6 +89,16 @@ class Utils{
         } catch (error) {
             logger.info(`${this.fName} : Error deleting record for : ${model}`);
         }
+    }
+
+    async returnArrayObjFunction(status:number,message:string,data:Array<any>){
+        const returnObject: returnObject = {
+            data: [data],
+            status: status,
+            message: message,
+        };
+
+        return returnObject;
     }
 }
 
