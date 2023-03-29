@@ -1,55 +1,57 @@
 import { appDataSource } from "../database/database"
-async function createData(model: any,data: any){
-    try {
-        const createData = await appDataSource.getRepository(model).create(data)
-        return createData;
-    } catch (error) {
-        return "error"
-    }
-}
+import { logger, fileName } from "../log4";
 
-async function getAllData(model: any,data: any){
-    try {
-        const createData = await appDataSource.getRepository(model).find(data)
-        return createData;
-    } catch (error) {
-        return "error"
+export class Utils{
+    fName: string;
+    async file(){
+        fileName(__filename).then((data)=>{
+            this.fName = data;
+        });
     }
-}
-
-async function getbyIDData(model: any,data: any){
-    try {
-        const createData = await appDataSource.getRepository(model).findOneBy(data)
-        return createData;
-    } catch (error) {
-        return "error"
+    
+    async createData(model: any,data: any){
+        try {
+            const createData:Array<any> = await appDataSource.getRepository(model).create(data)
+            return createData;
+        } catch (error) {
+            logger.info(`${this.fName} : Error creating record for : ${model}`);
+        }
     }
-}
 
-async function saveData(model: any,data: any){
-    try {
-        const saveData = await appDataSource.getRepository(model).save(data)
-        console.log(saveData);
-        return saveData;
-    } catch (error) {
-        console.log("Error while saving = " + error)
-        return "error"
+    async getAllData(model: any,data: any){
+        try {
+            const createData = await appDataSource.getRepository(model).find(data)
+            return createData;
+        } catch (error) {
+            logger.info(`${this.fName} : Error retriving record(s)for : ${model}`);
+        }
     }
-}
 
-async function deleteData(model: any,data: any){
-    try {
-        const deleteData = await appDataSource.getRepository(model).delete(data)
-        return deleteData;
-    } catch (error) {
-        return "error"
+    async getbyIDData(model: any,data: any){
+        try {
+            const createData = await appDataSource.getRepository(model).findOneBy(data)
+            return createData;
+        } catch (error) {
+            logger.info(`${this.fName} : Error retriving record for : ${model}`);
+        }
     }
-}
 
-export {
-    createData,
-    getAllData,
-    getbyIDData,
-    saveData,
-    deleteData
+    async saveData(model: any,data: any){
+        try {
+            const saveData = await appDataSource.getRepository(model).save(data)
+            console.log(saveData);
+            return saveData;
+        } catch (error) {
+            logger.info(`${this.fName} : Error saving record for : ${model}`);
+        }
+    }
+
+    async deleteData(model: any,data: any){
+        try {
+            const deleteData = await appDataSource.getRepository(model).delete(data)
+            return deleteData;
+        } catch (error) {
+            logger.info(`${this.fName} : Error deleting record for : ${model}`);
+        }
+    }
 }
