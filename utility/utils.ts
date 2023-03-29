@@ -63,11 +63,15 @@ class Utils{
     }
 
     async deleteData(model: any,data: any){
+        let modelName = model.name;
         try {
             const deleteData = await appDataSource.getRepository(model).delete(data)
-            return deleteData;
+            let returnObject = this.returnObj([deleteData],statusCodes.success,modelName,'save');
+            return returnObject;
         } catch (error) {
-            logger.info(`${this.fName} : Error deleting record for : ${model}`);
+            logger.info(`${this.fName} : Error saving record for : ${model}`);
+            let returnObject = this.returnObj([error],statusCodes.error,modelName,'saveerr');
+            return returnObject;
         }
     }
 

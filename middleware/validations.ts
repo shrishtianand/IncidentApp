@@ -44,7 +44,6 @@ async function validateDeleteEmployee(req: Request,res: Response, next: NextFunc
 }
 async function validateCreateIncident(req: Request,res: Response, next: NextFunction){
     var ldata = req.body;
-    console.log("reached here");
     const lJoiSchema = Joi.object({
         empID: Joi.number().required().label(incMessages.incOwnerRequired),
         createdBy: Joi.number().required().label(incMessages.incCreatedByRequired),

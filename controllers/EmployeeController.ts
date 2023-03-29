@@ -1,6 +1,6 @@
 import { Request, Response} from 'express';
 import { Employee } from '../models/EmployeeModel';
-import { statusCodes,empMessages,returnObject } from '../utility/constants';
+import { statusCodes } from '../utility/constants';
 import { Util } from '../utility/utils';
 import csv from 'csv-parser';
 import fs from 'fs';

@@ -7,7 +7,7 @@ const incidentRouter:Router = express.Router();
 const incObject:IncidentController = new IncidentController();
 
 //purpose:To create a incident
-// incidentRouter.post("/create",validateCreateIncident,incObject.createIncident); 
+incidentRouter.post("/create",validateCreateIncident,incObject.createIncident); 
 
 //purpose:To get a incident
 // incidentRouter.get("/get",incObject.getIncident);
