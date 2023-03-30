@@ -1,5 +1,6 @@
 import { Request, Response} from 'express';
 import { Incident } from '../models/IncidentModel';
+import { Incidentstatus } from '../models/IncidentStatusModel';
 import { Util } from '../utility/utils';
 import { statusCodes } from '../utility/constants';
 

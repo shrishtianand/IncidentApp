@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm"
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinTable } from "typeorm"
+import { Employee } from "./EmployeeModel"
 
 @Entity()
 export class Incident {
@@ -32,7 +33,7 @@ export class Incident {
     @Column("text",{nullable:true})
     impactPostSeverity: string
 
-    @Column("timestamp")
+    @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
     reportDateTime: string
 
     @Column("text",{nullable:true})
@@ -76,4 +77,8 @@ export class Incident {
 
     @Column("date",{nullable:true})
     closeDate: string
+
+    @ManyToOne(()=> Employee, (employee) => employee.empId)
+    @JoinTable()
+    classes: Employee;
 }

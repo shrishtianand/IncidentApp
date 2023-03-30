@@ -20,6 +20,7 @@ appDataSource
     })
     .catch((err) => {
         logger.error(`${fName} : Error during Data Source initialization: ${err}`)
+        console.log(err)
     })
 // Initialize the express engine
 const app: express.Application = express();
@@ -29,7 +30,7 @@ app.use(bodyParser.urlencoded({limit: '100mb', extended: true}));
 app.use(bodyParser.json({limit: '100mb'}));
 app.use("/employee",empRouter);  
 app.use("/incident",incidentRouter); 
-app.use('/incstatus',incStatusRoute) ;
+app.use('/incstatus',incStatusRoute);
 // Server setup
 app.listen(gport, () => {
     logger.info(`${fName} TypeScript with Express

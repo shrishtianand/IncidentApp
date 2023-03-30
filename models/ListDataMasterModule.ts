@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn } from "typeorm"
 
 @Entity()
-export class ListDataMaster {
+export class Listdatamaster {
     @PrimaryGeneratedColumn()
     lstMstID: number
     

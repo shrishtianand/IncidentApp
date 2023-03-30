@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn } from "typeorm"
 
 @Entity()
-export class TktAppr {
+export class Tktappr {
     @PrimaryGeneratedColumn()
     tktID: number
     

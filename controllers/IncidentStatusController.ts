@@ -1,150 +1,82 @@
 import { Request, Response} from 'express';
-import { IncidentStatus } from '../models/IncidentStatusModel';
+import { Incidentstatus } from '../models/IncidentStatusModel';
 import { Util } from '../utility/utils';
-import { statusCodes,incMessages } from '../utility/constants';
+import { statusCodes } from '../utility/constants';
 
 export class IncidentStatusController{
+    getFilteredIncidentStatus(arg0: string, getFilteredIncidentStatus: any) {
+        throw new Error('Method not implemented.');
+    }
+    getIncidentStatus(arg0: string, getIncidentStatus: any) {
+        throw new Error('Method not implemented.');
+    }
     async createIncident(req: Request,res: Response){
         try {            
-            const incident = await Util.createData(IncidentStatus,req.body);
+            const incident = await Util.createData(Incidentstatus,req.body);
             if(incident.status > 299){
-                return res.json({
-                    status:statusCodes.error,
-                    message:incMessages.incCreateError,
-                    data:incident
-                })
+                return res.json(incident)
             }
             else{
-                const result = await Util.saveData(IncidentStatus,incident)
-                if(result == null){
-                    return res.json({
-                        status:statusCodes.error,
-                        message:incMessages.incSaveError,
-                        data:null
-                    })
-                }
-                else{
-                    return res.json({
-                        status:statusCodes.success,
-                        message:incMessages.incCreatedSuccessfully,
-                        data:'success',
-                        result: result
-                    })
-                }
-            }
-                    
+                const result = await Util.saveData(Incidentstatus,incident.data)
+                return res.json(result)
+            }                    
         } catch (error) {
-            return res.json({
-                status:statusCodes.error,
-                message:incMessages.incCreateError,
-                data:error
-            })        
+            let returnObj = await Util.returnObj([error],statusCodes.error,'Incident','createerr')
+            return res.json(returnObj)           
         }
     }
     
     async getIncident(req: Request,res: Response){
         try {
             // const user = await appDataSource.getRepository(Employee).create(req.body)
-            const incident = await Util.createData(IncidentStatus,req.body);
+            const incident = await Util.getAllData(Incidentstatus,req.body);
             if(incident.status > 299){
-                return res.json({
-                    status:statusCodes.error,
-                    message:incMessages.incCreateError,
-                    data:null
-                })
+                let returnObj = await Util.returnObj([incident.data],statusCodes.error,'Incident','getallerr')
+                return res.json(returnObj)
             }
             else{
-                const result = await Util.saveData(IncidentStatus,incident)
-                if(result.status > 299){
-                    return res.json({
-                        status:statusCodes.error,
-                        message:incMessages.incSaveError,
-                        data:null
-                    })
-                }
-                else{
-                    return res.json({
-                        status:statusCodes.success,
-                        message:incMessages.incCreatedSuccessfully,
-                        data:result
-                    })
-                }
-            }
-                    
+                let returnObj = await Util.returnObj(incident.data,statusCodes.error,'Incident','getall')
+                return res.json(returnObj)            
+            }                
         } catch (error) {
-            return res.json({
-                status:statusCodes.error,
-                message:incMessages.incCreateError,
-                data:error
-            })        
+            let returnObj = await Util.returnObj([error],statusCodes.error,'Incident','getallerr')
+            return res.json(returnObj)        
         }
     }
     
     async getIncidentByID(req: Request,res: Response){
         try {
             // const user = await appDataSource.getRepository(Employee).create(req.body)
-            const incident = await Util.getbyIDData(IncidentStatus,req.body);
-            if(incident == null){
-                return res.json({
-                    status:statusCodes.error,
-                    message:incMessages.incCreateError,
-                    data:null
-                })
+            const incident = await Util.getbyIDData(Incidentstatus,req.body);
+            if(incident.status > 299){
+                let returnObj = await Util.returnObj([incident.data],statusCodes.error,'Incident','getallerr')
+                return res.json(returnObj)
             }
             else{
-                const result = await Util.saveData(IncidentStatus,incident)
-                if(result == null){
-                    return res.json({
-                        status:statusCodes.error,
-                        message:incMessages.incSaveError,
-                        data:null
-                    })
-                }
-                else{
-                    return res.json({
-                        status:statusCodes.success,
-                        message:incMessages.incCreatedSuccessfully,
-                        data:result
-                    })
-                }
-            }
-                    
+                let returnObj = await Util.returnObj(incident.data,statusCodes.error,'Incident','getall')
+                return res.json(returnObj)            
+            }                
         } catch (error) {
-            return res.json({
-                status:statusCodes.error,
-                message:incMessages.incCreateError,
-                data:error
-            })        
+            let returnObj = await Util.returnObj([error],statusCodes.error,'Incident','getallerr')
+            return res.json(returnObj)        
         }
     }
       
     async getFilteredIncident(req: Request,res: Response){
         try {
             // const user = await appDataSource.getRepository(Employee).create(req.body)
-            const incident = await Util.getAllData(IncidentStatus,req.body);
-            if(incident == null){
-                return res.json({
-                    status:statusCodes.error,
-                    message:incMessages.incCreateError,
-                    data:null
-                })
+            const incidentStatus = await Util.getAllData(Incidentstatus,req.body);
+            if(incidentStatus.status > 299){
+                let returnObj = await Util.returnObj([incidentStatus.data],statusCodes.error,'IncidentStatus','getallerr')
+                return res.json(returnObj)
             }
             else{
-            
-                return res.json({
-                    status:statusCodes.success,
-                    message:incMessages.incCreatedSuccessfully,
-                    data:incident
-                })
-                
-            }
-                    
+                let returnObj = await Util.returnObj(incidentStatus.data,statusCodes.error,'IncidentStatus','getall')
+                return res.json(returnObj)            
+            }                
         } catch (error) {
-            return res.json({
-                status:statusCodes.error,
-                message:incMessages.incCreateError,
-                data:error
-            })        
+            let returnObj = await Util.returnObj([error],statusCodes.error,'IncidentStatus','getallerr')
+            return res.json(returnObj)        
         }
     }
     
@@ -152,38 +84,18 @@ export class IncidentStatusController{
     async deleteIncidentByID(req: Request,res: Response){
         try {
             // const user = await appDataSource.getRepository(Employee).create(req.body)
-            const incident = await Util.deleteData(IncidentStatus,req.body);
-            if(incident == null){
-                return res.json({
-                    status:statusCodes.error,
-                    message:incMessages.incCreateError,
-                    data:null
-                })
+            const incidentStatus = await Util.deleteData(Incidentstatus,req.body);
+            if(incidentStatus.status > 299){
+                let returnObj = await Util.returnObj([incidentStatus.data],statusCodes.error,'IncidentStatus','getallerr')
+                return res.json(returnObj)
             }
             else{
-                const result = await Util.deleteData(IncidentStatus,incident)
-                if(result == null){
-                    return res.json({
-                        status:statusCodes.error,
-                        message:incMessages.incSaveError,
-                        data:null
-                    })
-                }
-                else{
-                    return res.json({
-                        status:statusCodes.success,
-                        message:incMessages.incCreatedSuccessfully,
-                        data:result
-                    })
-                }
-            }
-                    
+                let returnObj = await Util.returnObj(incidentStatus.data,statusCodes.error,'IncidentStatus','getall')
+                return res.json(returnObj)            
+            }                
         } catch (error) {
-            return res.json({
-                status:statusCodes.error,
-                message:incMessages.incCreateError,
-                data:error
-            })        
+            let returnObj = await Util.returnObj([error],statusCodes.error,'IncidentStatus','getallerr')
+            return res.json(returnObj)        
         }
     }
 }

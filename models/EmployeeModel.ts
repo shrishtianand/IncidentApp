@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm"
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, JoinColumn } from "typeorm"
+import { Incident } from "./IncidentModel"
 
 @Entity()
 export class Employee {
@@ -24,5 +25,9 @@ export class Employee {
     project: string
 
     @Column("boolean",{default:true})
-    foundInFile: boolean    
+    foundInFile: boolean 
+    
+    @OneToMany(() => Incident,(incident) => incident.empID)
+    @JoinColumn()
+    incident?: Incident
 }

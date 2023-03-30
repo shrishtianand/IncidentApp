@@ -1,10 +1,10 @@
-let statusCodes = {
-    success: 200,
-    created:201,
-    error:400, //bad request
-    unAuthorized:401, //unauthorized
-    forbidden:403, //access denied
-    notFound:404 //Not Found
+enum statusCodes  {
+    success = 200,
+    created = 201,
+    error = 400, //bad request
+    unAuthorized = 401, //unauthorized
+    forbidden = 403, //access denied
+    notFound = 404 //Not Found
 };
 
 let messages = {

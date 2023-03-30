@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn } from "typeorm"
 
 @Entity()
-export class ListDataDetails {
+export class Listdatadetails {
     @PrimaryGeneratedColumn()
     lstDtlID: number
     

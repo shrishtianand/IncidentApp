@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn } from "typeorm"
 
 @Entity()
-export class ProcessStep {
+export class Processstep {
     @PrimaryGeneratedColumn()
     psID: number
     

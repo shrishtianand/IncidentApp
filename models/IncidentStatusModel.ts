@@ -1,7 +1,8 @@
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm"
+import { Entity, Column, PrimaryGeneratedColumn, JoinTable, ManyToOne } from "typeorm"
+import { Incident } from "./IncidentModel"
 
 @Entity()
-export class IncidentStatus {
+export class Incidentstatus {
     @PrimaryGeneratedColumn()
     incidentID: number
     
@@ -16,4 +17,8 @@ export class IncidentStatus {
 
     @Column("text")
     changedBy: string    
+
+    @ManyToOne(()=> Incident, (incident) => incident.IncidentId)
+    @JoinTable()
+    classes: Incident;
 }
