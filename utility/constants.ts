@@ -52,6 +52,8 @@ let defaultMessages = {
     getsingle: ' details'
 }
 
+let csvColumns = ['firstName', 'lastName','emailID','department','client','project'];
+
 type  returnObject = {
     status: number,
     message: string,
@@ -64,6 +66,7 @@ export {
     empMessages,
     incMessages,
     defaultMessages,
+    csvColumns,
     returnObject
 
 }

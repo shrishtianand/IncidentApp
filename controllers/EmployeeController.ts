@@ -1,6 +1,6 @@
 import { Request, Response} from 'express';
 import { Employee } from '../models/EmployeeModel';
-import { statusCodes } from '../utility/constants';
+import { statusCodes,csvColumns } from '../utility/constants';
 import { Util } from '../utility/utils';
 import csv from 'csv-parser';
 import fs from 'fs';
@@ -66,7 +66,7 @@ export class EmployeeController{
             let errors = [];
             let employees = await Util.getAllData(Employee,{});
             fs.createReadStream('./utility/data.csv')
-            .pipe(csv(['firstName', 'lastName','emailID','department','client','project']))
+            .pipe(csv(csvColumns))
             .on('data', async (data) => {
                 var index = employees.data.findIndex(x => x.emailID ===data.emailID);
                 employees.data.splice(index, 1)
