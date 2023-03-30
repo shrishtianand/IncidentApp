@@ -12,7 +12,7 @@ export class Incidentstatus {
     @Column("text")
     status: string
 
-    @Column("datetime")
+    @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
     statusDate: string
 
     @Column("text")

@@ -12,12 +12,12 @@ export class IncidentStatusController{
     }
     async createIncident(req: Request,res: Response){
         try {            
-            const incident = await Util.createData(Incidentstatus,req.body);
-            if(incident.status > 299){
-                return res.json(incident)
+            const incidentStatus = await Util.createData(Incidentstatus,req.body);
+            if(incidentStatus.status > 299){
+                return res.json(incidentStatus)
             }
             else{
-                const result = await Util.saveData(Incidentstatus,incident.data)
+                const result = await Util.saveData(Incidentstatus,incidentStatus.data)
                 return res.json(result)
             }                    
         } catch (error) {
@@ -29,13 +29,13 @@ export class IncidentStatusController{
     async getIncident(req: Request,res: Response){
         try {
             // const user = await appDataSource.getRepository(Employee).create(req.body)
-            const incident = await Util.getAllData(Incidentstatus,req.body);
-            if(incident.status > 299){
-                let returnObj = await Util.returnObj([incident.data],statusCodes.error,'Incident','getallerr')
+            const incidentStatus = await Util.getAllData(Incidentstatus,req.body);
+            if(incidentStatus.status > 299){
+                let returnObj = await Util.returnObj([incidentStatus.data],statusCodes.error,'Incident','getallerr')
                 return res.json(returnObj)
             }
             else{
-                let returnObj = await Util.returnObj(incident.data,statusCodes.error,'Incident','getall')
+                let returnObj = await Util.returnObj(incidentStatus.data,statusCodes.error,'Incident','getall')
                 return res.json(returnObj)            
             }                
         } catch (error) {
@@ -47,13 +47,13 @@ export class IncidentStatusController{
     async getIncidentByID(req: Request,res: Response){
         try {
             // const user = await appDataSource.getRepository(Employee).create(req.body)
-            const incident = await Util.getbyIDData(Incidentstatus,req.body);
-            if(incident.status > 299){
-                let returnObj = await Util.returnObj([incident.data],statusCodes.error,'Incident','getallerr')
+            const incidentStatus = await Util.getbyIDData(Incidentstatus,req.body);
+            if(incidentStatus.status > 299){
+                let returnObj = await Util.returnObj([incidentStatus.data],statusCodes.error,'Incident','getallerr')
                 return res.json(returnObj)
             }
             else{
-                let returnObj = await Util.returnObj(incident.data,statusCodes.error,'Incident','getall')
+                let returnObj = await Util.returnObj(incidentStatus.data,statusCodes.error,'Incident','getall')
                 return res.json(returnObj)            
             }                
         } catch (error) {
