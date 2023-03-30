@@ -24,6 +24,24 @@ export class EmployeeController{
         }
     }
 
+    async  getByIDEmployee(req: Request,res: Response){
+        try {
+            // const user = await appDataSource.getRepository(Employee).create(req.body)
+            const employee = await Util.getbyIDData(Employee,req.body);
+            if(employee.status > 299){
+                return res.json(employee)
+            }
+            else{
+                const result = await Util.saveData(Employee,employee.data)
+                return res.json(result)
+            }
+                    
+        } catch (error) {
+            let returnObj = await Util.returnObj([error],statusCodes.error,'Employee','createerr')
+            return res.json(returnObj)        
+        }
+    }
+
     async getAllEmployee(req: Request,res: Response){
         try {
             // const user = await appDataSource.getRepository(Employee).create(req.body)

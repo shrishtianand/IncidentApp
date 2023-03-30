@@ -1,6 +1,7 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, JoinColumn } from "typeorm"
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, JoinColumn, Unique, Index } from "typeorm"
 import { Incident } from "./IncidentModel"
 
+@Index("unique_constraint", ['emailID'], {unique:true})
 @Entity()
 export class Employee {
     @PrimaryGeneratedColumn()
@@ -12,7 +13,7 @@ export class Employee {
     @Column("text")
     lastName: string
 
-    @Column("text")
+    @Column({type: "varchar", nullable:false})
     emailID: string
 
     @Column("text")
