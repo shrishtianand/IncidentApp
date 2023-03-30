@@ -70,7 +70,7 @@ export class EmployeeController{
                 }
                 else if(employeeData.status == 200 && employeeData.data[0] != null){
                     let updateData = {
-                        ...employeeData,
+                        ...employeeData.data[0],
                         firstName:data.firstName,
                         lastName:data.lastName,
                         department:data.department,
