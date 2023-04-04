@@ -7,6 +7,7 @@ import empRouter from './routes/EmployeeRoute';
 import incidentRouter from './routes/IncidentRoute';
 import incStatusRoute from './routes/IncidentStatusRoute';
 import { appDataSource } from './database/database';
+import attachmentRouter from './routes/AttachmentRouter';
 var fName:string;
 
 fileName(__filename).then((data)=>{
@@ -28,9 +29,11 @@ const app: express.Application = express();
 app.use(bodyParser.urlencoded({limit: '100mb', extended: true}));
 // parse application/json
 app.use(bodyParser.json({limit: '100mb'}));
+app.use('/attachments',express.static('attachments'));
 app.use("/employee",empRouter);  
 app.use("/incident",incidentRouter); 
 app.use('/incstatus',incStatusRoute);
+app.use('/incident',attachmentRouter);
 // Server setup
 app.listen(gport, () => {
     logger.info(`${fName} TypeScript with Express
