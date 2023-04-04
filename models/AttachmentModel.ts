@@ -1,19 +1,23 @@
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm"
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from "typeorm"
+import { Incident } from "./IncidentModel"
 
 @Entity()
 export class Attachment {
     @PrimaryGeneratedColumn()
-    incidentID: number
+    attachmentId: number
     
-    @Column("text")
-    type: string
+    // @Column("text")
+    // type: string
 
-    @Column("text")
-    key: string
+    // @Column("text")
+    // key: string
 
-    @Column("text")
-    value: string
+    // @Column("text")
+    // value: string
 
     @Column("text")
     name: string    
+
+    @ManyToOne(()=> Incident)
+    Incident: Incident;
 }
