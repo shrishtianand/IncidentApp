@@ -20,7 +20,7 @@ const appDataSource = new DataSource({
     synchronize: true,
     logging: false,
     entities: [
-        Employee,
+        Employee,   
         Incident,
         Incidentstatus,
         Attachment,
