@@ -1,5 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinTable } from "typeorm"
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinTable, OneToMany } from "typeorm"
 import { Employee } from "./EmployeeModel"
+import { Attachment } from "./AttachmentModel"
 
 @Entity()
 export class Incident {
@@ -81,4 +82,7 @@ export class Incident {
     @ManyToOne(()=> Employee, (employee) => employee.empId)
     @JoinTable()
     classes: Employee;
+
+    @OneToMany(() => Attachment, (attachment) => attachment.Incident)
+    attachments: Attachment[];
 }
