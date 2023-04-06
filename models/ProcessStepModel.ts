@@ -1,12 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm"
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from "typeorm"
+import { Tktappr } from "./TktApprModule"
 
 @Entity()
 export class Processstep {
     @PrimaryGeneratedColumn()
     psID: number
-    
-    @Column("integer")
-    psNumber: number
 
     @Column("text")
     psName: string
@@ -15,5 +13,8 @@ export class Processstep {
     sendMail: boolean
 
     @Column("text")
-    psEmailId: string
+    psEmailID: string
+
+    @OneToMany(() => Tktappr, (tktappr) => tktappr.processStep)
+    tktappr: Tktappr[];
 }

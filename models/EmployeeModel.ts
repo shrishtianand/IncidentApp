@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, JoinColumn, Unique, Index } from "typeorm"
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, JoinColumn, Index } from "typeorm"
 import { Incident } from "./IncidentModel"
 
 @Index("unique_constraint", ['emailID'], {unique:true})
@@ -26,9 +26,11 @@ export class Employee {
     project: string
 
     @Column("boolean",{default:true})
-    foundInFile: boolean 
+    foundInFile: boolean
+
+    @Column("integer")
+    managerID: number
     
-    @OneToMany(() => Incident,(incident) => incident.empID)
-    @JoinColumn()
-    incident?: Incident
+    @OneToMany(() => Incident,incident => incident.employee)
+    incident:Incident[]
 }
