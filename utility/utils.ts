@@ -106,11 +106,6 @@ class Utils{
             var returnData = {errors:[],csvEmails:[]}
             for await (const data of csvData) {
                 returnData.csvEmails.push(data.emailID)
-                // Expected output: 1
-            
-                // Closes iterator, triggers return
-              
-            // await csvData.forEach(async (data)=> {
                 const employeeData = await Util.getbyIDData(Employee,{emailID:data.emailID});
                 if(employeeData.status > 299){
                     returnData.errors.push(data.emailID)
