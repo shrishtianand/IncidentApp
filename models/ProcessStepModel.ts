@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from "typeorm"
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, JoinColumn } from "typeorm"
 import { Tktappr } from "./TktApprModule"
 
 @Entity()
@@ -16,5 +16,6 @@ export class Processstep {
     psEmailID: string
 
     @OneToMany(() => Tktappr, (tktappr) => tktappr.processStep)
-    tktappr: Tktappr[];
+    @JoinColumn({name: 'psID'})
+    tktappr: Tktappr[]
 }

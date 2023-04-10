@@ -18,6 +18,7 @@ appDataSource
     .initialize()
     .then(() => {
         logger.info(`${fName} : Data Source has been initialized!`)
+        console.log("Done")
     })
     .catch((err) => {
         logger.error(`${fName} : Error during Data Source initialization: ${err}`)

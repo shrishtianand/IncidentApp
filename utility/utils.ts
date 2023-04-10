@@ -1,5 +1,6 @@
 import { appDataSource } from "../database/database"
 import { logger, fileName } from "../log4";
+import { Employee } from "../models/EmployeeModel";
 import { returnObject, statusCodes, defaultMessages } from "./constants";
 
 class Utils{
@@ -20,6 +21,7 @@ class Utils{
         } catch (error) {
             logger.info(`${this.fName} : Error creating record for : ${modelName}`);
             let returnObject = this.returnObj([error],statusCodes.error,modelName,'createerr');
+            logger.info(error)
             return returnObject;
         }
     }
@@ -27,12 +29,14 @@ class Utils{
     async updateData(model: any,data: any){
         let modelName = model.name;
         try {
-            const createData = await appDataSource.getRepository(model).update(data, true)
-            let returnObject = this.returnObj([createData],statusCodes.success,modelName,'create');
+            const getModelID = await appDataSource.getRepository(model).getId(data)
+            const updateData = await appDataSource.createQueryBuilder().update(model).set(data).where("IncidentId = :IncidentId",{IncidentId: getModelID}).execute()
+            let returnObject = this.returnObj([updateData],statusCodes.success,modelName,'create');
             logger.info(`${this.fName} : Successfully updated record for : ${modelName}`);
             return returnObject;
         } catch (error) {
             logger.info(`${this.fName} : Error updating record for : ${modelName}`);
+            logger.info(error)
             let returnObject = this.returnObj([error],statusCodes.error,modelName,'createerr');
             return returnObject;
         }
@@ -47,6 +51,7 @@ class Utils{
             return returnObject;
         } catch (error) {
             logger.info(`${this.fName} : Error retriving record(s)for : ${modelName}`);
+            logger.info(error)
             let returnObject = this.returnObj([error],statusCodes.error,modelName,'getallerr');
             return returnObject;
         }
@@ -61,6 +66,7 @@ class Utils{
             return returnObject;
         } catch (error) {
             logger.info(`${this.fName} : Error retriving record for : ${modelName}`);
+            logger.info(error)
             let returnObject = this.returnObj([error],statusCodes.error,modelName,'getsingleerr');
             return returnObject;
         }
@@ -75,6 +81,7 @@ class Utils{
             return returnObject;
         } catch (error) {
             logger.info(`${this.fName} : Error saving record for : ${modelName}`);
+            logger.info(error)
             let returnObject = this.returnObj([error],statusCodes.error,modelName,'saveerr');
             return returnObject;
         }
@@ -89,8 +96,70 @@ class Utils{
             return returnObject;
         } catch (error) {
             logger.info(`${this.fName} : Error deleting record for : ${modelName}`);
+            logger.info(error)
             let returnObject = this.returnObj([error],statusCodes.error,modelName,'saveerr');
             return returnObject;
+        }
+    }
+    async getCSVEmails(csvData: Array<any>) {
+        try {
+            var returnData = {errors:[],csvEmails:[]}
+            for await (const data of csvData) {
+                returnData.csvEmails.push(data.emailID)
+                // Expected output: 1
+            
+                // Closes iterator, triggers return
+              
+            // await csvData.forEach(async (data)=> {
+                const employeeData = await Util.getbyIDData(Employee,{emailID:data.emailID});
+                if(employeeData.status > 299){
+                    returnData.errors.push(data.emailID)
+                    if(csvData.length == returnData.csvEmails.length){
+                        return returnData
+                    }
+                }
+                else if(employeeData.status == 200 && employeeData.data[0] == null){
+                    const employee = await Util.createData(Employee,data);
+                    if(employee.status > 299){
+                        returnData.errors.push(data.emailID)
+                    }
+                    else{
+                        const result = await Util.saveData(Employee,employee.data[0])
+                        if(result.status > 299){
+                            returnData.errors.push(data.emailID)
+                        }
+                        if(csvData.length == returnData.csvEmails.length){
+                            return returnData
+                        }
+                    }
+                }
+                else if(employeeData.status == 200 && employeeData.data[0] != null){
+                    let updateData = {
+                        ...employeeData.data[0],
+                        firstName:data.firstName,
+                        lastName:data.lastName,
+                        department:data.department,
+                        client:data.client,
+                        project:data.project,
+                        foundInFile:true
+                    }
+                    const result = await Util.saveData(Employee,updateData)
+                    if(result.status > 299){
+                        returnData.errors.push(data.emailID)
+                    }
+                    if(csvData.length == returnData.csvEmails.length){
+                        return returnData
+                    }
+                }
+                else{
+                    returnData.errors.push(data.emailID)
+                    if(csvData.length == returnData.csvEmails.length){
+                        return returnData
+                    }
+                }
+            }          
+        } catch (error) {
+            return {errors:[error],csvEmails:[]}
         }
     }
 

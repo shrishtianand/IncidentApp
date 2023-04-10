@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from "typeorm"
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from "typeorm"
 import { Processstep } from "./ProcessStepModel"
 
 @Entity()
@@ -18,7 +18,8 @@ export class Tktappr {
     @Column("text")
     tktStatus: string   
 
-    @ManyToOne(()=> Processstep,processStep => processStep.psID)
-    processStep: Processstep;   
+    @ManyToOne(()=> Processstep, {nullable:false})
+    @JoinColumn({name: 'psID'})
+    processStep: Processstep;  
     
 }

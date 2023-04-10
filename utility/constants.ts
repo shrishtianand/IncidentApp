@@ -24,6 +24,7 @@ let empMessages = {
     empDepartmentRequired: 'department is required',
     empClientRequired: 'client is required',
     empProjectRequired: 'project is required',
+    empManagerIDRequired: 'Manager ID is required',
     empNotFound: 'employee not found',
     getAllEmpsErr: 'Error while getting all employees',
 }
@@ -32,6 +33,7 @@ let incMessages = {
     incCreatedSuccessfully: 'Incident created successfully',
     incSaveError: 'Error while saving incident',
     incCreateError: 'Error while creating incident',
+    incCUpdateError: 'Error while updating incident',
     incOwnerRequired: 'Owner is required',
     incCreatedByRequired: 'CreatedBy is required',
     incDescRequired: 'Description is required',

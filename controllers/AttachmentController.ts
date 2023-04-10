@@ -11,11 +11,11 @@ import { appDataSource } from '../database/database';
  */
 export const createAttachment = async (req: Request, res: Response) => {
   try {
-    const { IncidentId} = req.body;
+    const { incidentId} = req.body;
     const incidentRepository = appDataSource.getRepository(Incident);
     const incident = await incidentRepository.findOne({
       where: {
-          IncidentId: IncidentId
+          incidentId: incidentId
       },
   });
     console.log(incident);
@@ -32,7 +32,7 @@ export const createAttachment = async (req: Request, res: Response) => {
     for (let i = 0; i < +req.files.length; i++) {
       const Attachment = attachmentRepository.create({
         name: req.files[i].originalname,
-        Incident:IncidentId,
+        Incident:incidentId,
       });
       Attachments.push(Attachment);
       await attachmentRepository.save(Attachment);

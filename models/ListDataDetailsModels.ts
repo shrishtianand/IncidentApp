@@ -1,16 +1,18 @@
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm"
+import { Entity, Column, PrimaryGeneratedColumn, JoinColumn, ManyToOne } from "typeorm"
+import { Listdatamaster } from "./ListDataMasterModule";
 
 @Entity()
 export class Listdatadetails {
     @PrimaryGeneratedColumn()
     lstDtlID: number
     
-    @Column("text")
+    @Column("text", {nullable:false})
     lstDtlCode: string
 
-    @Column("integer")
-    lstDtlDesc: number
+    @Column("text")
+    lstDtlDesc: string
 
-    @Column("integer")
-    lstMstID: number
+    @ManyToOne(()=> Listdatamaster, {nullable:false})
+    @JoinColumn({name: 'lstMstID'})
+    lstMstID: Listdatamaster;  
 }

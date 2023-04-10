@@ -46,7 +46,7 @@ async function validateDeleteEmployee(req: Request,res: Response, next: NextFunc
 async function validateCreateIncident(req: Request,res: Response, next: NextFunction){
     var ldata = req.body;
     const lJoiSchema = Joi.object({
-        employeeempID: Joi.number().required().label(incMessages.incOwnerRequired),
+        empId: Joi.number().required().label(incMessages.incOwnerRequired),
         createdBy: Joi.number().required().label(incMessages.incCreatedByRequired),
         description: Joi.string().required().label(incMessages.incDescRequired),
         impact: Joi.string().optional(),
@@ -89,7 +89,7 @@ async function validateCreateIncident(req: Request,res: Response, next: NextFunc
 async function validateGetIncidentByID(req: Request,res: Response, next: NextFunction){
     var ldata = req.body;
     const lJoiSchema = Joi.object({
-        incidentId: Joi.string().required().label(incMessages.incIncidentIDRequired)
+        IncidentId: Joi.string().required().label(incMessages.incIncidentIDRequired)
     }).options({abortEarly:false});
     let lresponse = lJoiSchema.validate(ldata,{abortEarly:false});
     if(lresponse.error == undefined || lresponse.error == null){

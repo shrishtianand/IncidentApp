@@ -1,11 +1,13 @@
 import { Request, Response} from 'express';
 import { Incident } from '../models/IncidentModel';
-import { Incidentstatus } from '../models/IncidentStatusModel';
 import { Util } from '../utility/utils';
 import { statusCodes } from '../utility/constants';
+import { IncidentStatusController } from './IncidentStatusController';
+import { logger } from '../log4';
 
 export class IncidentController{
     async createIncident(req: Request,res: Response){
+        
         try {            
             const incident = await Util.createData(Incident,req.body);
             if(incident.status > 299){
@@ -13,11 +15,13 @@ export class IncidentController{
             }
             else{
                 const result = await Util.saveData(Incident,incident.data)
+                const incidentResponse = await IncidentStatusController.createIncidentStatus((result.data[0]).incidentId, 'NEW', (result.data[0]).createdBy);
+                result.data.push(incidentResponse)
                 return res.json(result)
             }                    
         } catch (error) {
             let returnObj = await Util.returnObj([error],statusCodes.error,'Incident','createerr')
-            return res.json(returnObj)           
+            return res.json([returnObj])           
         }
     }
     
@@ -25,13 +29,24 @@ export class IncidentController{
         try {
             // const user = await appDataSource.getRepository(Employee).create(req.body)
             const incident = await Util.getAllData(Incident,req.body);
+            //logger.info(incident.data[0].IncidentId)
             if(incident.status > 299){
                 let returnObj = await Util.returnObj([incident.data],statusCodes.error,'Incident','getallerr')
                 return res.json(returnObj)
             }
             else{
-                let returnObj = await Util.returnObj(incident.data,statusCodes.error,'Incident','getall')
-                return res.json(returnObj)            
+                let returnObj ;
+                // for (let place of incident.data)
+                // {
+                //     logger.info(place)
+                //     logger.info((incident.data[place]).IncidentId)
+                //     const incidentResponse = await IncidentStatusController.getIncidentStatusByID((incident.data[place]).IncidentId);
+                //     //returnObj = await Util.returnObj(incident.data,statusCodes.success,'Incident','getall')
+                //     (incident.data[place]).push(incidentResponse)
+                // }
+                returnObj = await Util.returnObj(incident.data,statusCodes.success,'Incident','getall')
+                    
+                return res.json(returnObj)           
             }                
         } catch (error) {
             let returnObj = await Util.returnObj([error],statusCodes.error,'Incident','getallerr')
@@ -40,16 +55,22 @@ export class IncidentController{
     }
     
     async getIncidentByID(req: Request,res: Response){
+        logger.info("Reached to Controller")
         try {
             // const user = await appDataSource.getRepository(Employee).create(req.body)
             const incident = await Util.getbyIDData(Incident,req.body);
+            //logger.info(incident.data[0].IncidentId)
             if(incident.status > 299){
-                let returnObj = await Util.returnObj([incident.data],statusCodes.error,'Incident','getallerr')
-                return res.json(returnObj)
+                return res.json(incident)
             }
             else{
-                let returnObj = await Util.returnObj(incident.data,statusCodes.error,'Incident','getall')
-                return res.json(returnObj)            
+                let returnObj ;
+                // const incidentResponse = await IncidentStatusController.getIncidentStatusByID((incident.data[0]).IncidentId);
+                
+                // (incident.data[0]).push(incidentResponse)            
+                returnObj = await Util.returnObj(incident.data,statusCodes.success,'Incident','getall')
+                    
+                return res.json(returnObj)           
             }                
         } catch (error) {
             let returnObj = await Util.returnObj([error],statusCodes.error,'Incident','getallerr')
@@ -66,7 +87,9 @@ export class IncidentController{
                 return res.json(returnObj)
             }
             else{
-                let returnObj = await Util.returnObj(incident.data,statusCodes.error,'Incident','getall')
+                const incidentResponse = await IncidentStatusController.getIncidentStatusByID((incident.data[0]).incidentId)
+                let returnObj = await Util.returnObj(incident.data,statusCodes.success,'Incident','getall')
+                returnObj.data.push(incidentResponse)
                 return res.json(returnObj)            
             }                
         } catch (error) {
@@ -91,6 +114,24 @@ export class IncidentController{
         } catch (error) {
             let returnObj = await Util.returnObj([error],statusCodes.error,'Incident','getallerr')
             return res.json(returnObj)        
+        }
+    }
+
+    async updateIncident(req: Request,res: Response){
+        try {            
+            const incident = await Util.updateData(Incident,req.body);
+            if(incident.status > 299){
+                return res.json(incident)
+            }
+            else{
+                const result = await Util.saveData(Incident,incident.data)
+                // const incidentResponse = await IncidentStatusController.createIncidentStatus((result.data[0]).incidentId, 'NEW', (result.data[0]).createdBy);
+                // result.data.push(incidentResponse)
+                return res.json(result)
+            }                    
+        } catch (error) {
+            let returnObj = await Util.returnObj([error],statusCodes.error,'Incident','updateeerr')
+            return res.json([returnObj])           
         }
     }
 }
