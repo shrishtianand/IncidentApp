@@ -54,7 +54,7 @@ let defaultMessages = {
     getsingle: ' details'
 }
 
-let csvColumns = ['firstName', 'lastName','emailID','department','client','project'];
+let csvColumns = ['firstName', 'lastName','emailID','department','client','project','managerID'];
 
 type  returnObject = {
     status: number,
