@@ -64,7 +64,7 @@ export class EmployeeController{
     async saveEmployeesFromFile(req: Request,res: Response) {
         try {
             let csvData = [];
-            fs.createReadStream('./utility/data.csv')
+            fs.createReadStream(`./attachments/${req.file.filename}`)
             .pipe(csv(csvColumns))
             .on('data', async (data) => {
                 csvData.push(data);
