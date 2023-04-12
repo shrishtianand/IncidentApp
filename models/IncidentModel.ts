@@ -2,6 +2,7 @@ import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinTable, OneToMany
 import { Employee } from "./EmployeeModel"
 import { Attachment } from "./AttachmentModel"
 import { Incidentstatus } from "./IncidentStatusModel"
+import { Tktappr } from "./TktApprModule"
 
 @Entity()
 export class Incident {
@@ -78,7 +79,7 @@ export class Incident {
     @Column("date",{nullable:true})
     closeDate: string
 
-    @ManyToOne(()=> Employee, {nullable:false})
+    @ManyToOne(()=> Employee, {nullable:true})
     @JoinColumn({name:'empId'})
     employee:Employee
 
@@ -88,4 +89,8 @@ export class Incident {
     @OneToMany(() => Incidentstatus, (incidentStatus) => incidentStatus.Incident)
     @JoinColumn({name: 'incidentId'})
     incidentStatus: Incidentstatus[]
+
+    @OneToMany(() => Tktappr, (tktappr) => tktappr.Incident)
+    @JoinColumn({name: 'incidentId'})
+    tktappr: Tktappr[]
 }

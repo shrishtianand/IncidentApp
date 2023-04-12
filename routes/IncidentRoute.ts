@@ -16,7 +16,7 @@ incidentRouter.get("/get",incObject.getIncident);
 incidentRouter.get("/getfiltered",incObject.getFilteredIncident);
 
 //purpose:To get a incident by incidentID
-incidentRouter.get("/getByID",validateGetIncidentByID,incObject.getIncidentByID); 
+incidentRouter.get("/getByID",incObject.getIncidentByID); 
 
 //purpose: To update existing incident
 incidentRouter.post("/update",incObject.updateIncident); 

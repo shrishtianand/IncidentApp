@@ -15,7 +15,7 @@ export class Processstep {
     @Column("text")
     psEmailID: string
 
-    @OneToMany(() => Tktappr, (tktappr) => tktappr.processStep)
+    @OneToMany(() => Tktappr, (tktappr) => tktappr.Process)
     @JoinColumn({name: 'psID'})
     tktappr: Tktappr[]
 }

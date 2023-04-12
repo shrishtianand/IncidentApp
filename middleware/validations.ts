@@ -73,7 +73,6 @@ async function validateCreateIncident(req: Request,res: Response, next: NextFunc
                
     }).options({abortEarly:false});
     let lresponse = lJoiSchema.validate(ldata,{abortEarly:false});
-    console.log(lresponse);
     if(lresponse.error == undefined || lresponse.error == null){
         next();
     }
@@ -89,7 +88,7 @@ async function validateCreateIncident(req: Request,res: Response, next: NextFunc
 async function validateGetIncidentByID(req: Request,res: Response, next: NextFunction){
     var ldata = req.body;
     const lJoiSchema = Joi.object({
-        IncidentId: Joi.string().required().label(incMessages.incIncidentIDRequired)
+        incidentId: Joi.number().required().label(incMessages.incIncidentIDRequired)
     }).options({abortEarly:false});
     let lresponse = lJoiSchema.validate(ldata,{abortEarly:false});
     if(lresponse.error == undefined || lresponse.error == null){

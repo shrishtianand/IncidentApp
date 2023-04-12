@@ -4,58 +4,54 @@ import { Util } from '../utility/utils';
 import { statusCodes } from '../utility/constants';
 import { IncidentStatusController } from './IncidentStatusController';
 import { logger } from '../log4';
+import { Processstep } from '../models/ProcessStepModel';
+import { tstep } from '../Services/ProcessFlow';
 
 export class IncidentController{
     async createIncident(req: Request,res: Response){
         
         try {            
-            const incident = await Util.createData(Incident,req.body);
+            const incident = await Util.createData(Incident,req.body);        
             if(incident.status > 299){
                 return res.json(incident)
             }
-            else{
+            else{                
                 const result = await Util.saveData(Incident,incident.data)
                 const incidentResponse = await IncidentStatusController.createIncidentStatus((result.data[0]).incidentId, 'NEW', (result.data[0]).createdBy);
-                result.data.push(incidentResponse)
+                (result.data[0]).incidentResponse = incidentResponse
+                const tktStep = await tstep.createTktAppr((result.data[0]).incidentId);                
+                (result.data[0]).tktStep = tktStep             
                 return res.json(result)
             }                    
         } catch (error) {
+            console.log(error)
             let returnObj = await Util.returnObj([error],statusCodes.error,'Incident','createerr')
             return res.json([returnObj])           
         }
     }
     
     async getIncident(req: Request,res: Response){
-        try {
-            // const user = await appDataSource.getRepository(Employee).create(req.body)
-            const incident = await Util.getAllData(Incident,req.body);
-            //logger.info(incident.data[0].IncidentId)
-            if(incident.status > 299){
-                let returnObj = await Util.returnObj([incident.data],statusCodes.error,'Incident','getallerr')
-                return res.json(returnObj)
-            }
-            else{
-                let returnObj ;
-                // for (let place of incident.data)
-                // {
-                //     logger.info(place)
-                //     logger.info((incident.data[place]).IncidentId)
-                //     const incidentResponse = await IncidentStatusController.getIncidentStatusByID((incident.data[place]).IncidentId);
-                //     //returnObj = await Util.returnObj(incident.data,statusCodes.success,'Incident','getall')
-                //     (incident.data[place]).push(incidentResponse)
-                // }
-                returnObj = await Util.returnObj(incident.data,statusCodes.success,'Incident','getall')
-                    
-                return res.json(returnObj)           
-            }                
-        } catch (error) {
-            let returnObj = await Util.returnObj([error],statusCodes.error,'Incident','getallerr')
-            return res.json(returnObj)        
-        }
+        // try {
+        //     // const user = await appDataSource.getRepository(Employee).create(req.body)
+        //     const incident = await Util.getAllData(Incident,req.body);
+        //     if(incident.status > 299){
+        //         let returnObj = await Util.returnObj([incident.data],statusCodes.error,'Incident','getallerr')
+        //         return res.json(returnObj)
+        //     }
+        //     else{ 
+        //         const incidentResponse = await IncidentStatusController.getIncidentStatusByID(.IncidentId)
+        //         let returnObj  = await Util.returnObj(incident.data,statusCodes.success,'Incident','getall')
+        //         returnObj.data.push(incidentResponse)            
+        //         returnObj = await Util.returnObj(incident.data,statusCodes.success,'Incident','getall')                   
+        //         return res.json(returnObj)           
+        //     }                
+        // } catch (error) {
+        //     let returnObj = await Util.returnObj([error],statusCodes.error,'Incident','getallerr')
+        //     return res.json(returnObj)        
+        // }
     }
     
     async getIncidentByID(req: Request,res: Response){
-        logger.info("Reached to Controller")
         try {
             // const user = await appDataSource.getRepository(Employee).create(req.body)
             const incident = await Util.getbyIDData(Incident,req.body);
@@ -65,14 +61,15 @@ export class IncidentController{
             }
             else{
                 let returnObj ;
-                // const incidentResponse = await IncidentStatusController.getIncidentStatusByID((incident.data[0]).IncidentId);
+                const incidentResponse = await IncidentStatusController.getIncidentStatusByID((incident.data[0]).IncidentId);
                 
-                // (incident.data[0]).push(incidentResponse)            
+                (incident.data[0]).push(incidentResponse)            
                 returnObj = await Util.returnObj(incident.data,statusCodes.success,'Incident','getall')
                     
                 return res.json(returnObj)           
             }                
         } catch (error) {
+            console.log(error)
             let returnObj = await Util.returnObj([error],statusCodes.error,'Incident','getallerr')
             return res.json(returnObj)        
         }
