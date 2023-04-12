@@ -1,6 +1,7 @@
 // Import the express in typescript file
 import express from 'express';
 import {logger, fileName} from './log4';
+import  fs from 'fs';
 import bodyParser from "body-parser";
 import { gport } from './config/config';
 import empRouter from './routes/EmployeeRoute';
@@ -26,6 +27,20 @@ appDataSource
     })
 // Initialize the express engine
 const app: express.Application = express();
+
+async function createDir () {
+    if(!fs.existsSync('attachments')){
+      try{
+        return await fs.mkdir('attachments', (err) => {
+           if (err) console.log(err);
+          })
+      }catch(err){
+        console.log(err);
+      }
+    }
+}
+  
+createDir();
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({limit: '100mb', extended: true}));
 // parse application/json
