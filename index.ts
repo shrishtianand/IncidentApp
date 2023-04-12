@@ -1,6 +1,7 @@
 // Import the express in typescript file
 import express from 'express';
 import {logger, fileName} from './log4';
+import cors from "cors";
 import  fs from 'fs';
 import bodyParser from "body-parser";
 import { gport } from './config/config';
@@ -41,6 +42,13 @@ async function createDir () {
 }
   
 createDir();
+
+app.use(cors({
+    "origin": "*",
+    "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+    "preflightContinue": false,
+    "optionsSuccessStatus": 204
+}))
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({limit: '100mb', extended: true}));
 // parse application/json
