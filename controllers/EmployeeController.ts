@@ -46,7 +46,7 @@ export class EmployeeController{
     async getAllEmployee(req: Request,res: Response){
         try {
             // const user = await appDataSource.getRepository(Employee).create(req.body)
-            const employee = await Util.getAllData(Employee,{where:{'foundInFile':true}});
+            const employee = await Util.getAllData(Employee,{});
             if(employee.status > 299){
                 let returnObj = await Util.returnObj([employee.data],statusCodes.error,'Employee','getallerr')
                 return res.json(returnObj)
