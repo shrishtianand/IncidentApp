@@ -76,16 +76,16 @@ export class EmployeeController{
                     return res.json(returnObj)
                 }
                 else{
-                    // await appDataSource
-                    // .createQueryBuilder()
-                    // .update(Employee)
-                    // .set({ "foundInFile":false })
-                    // .where("'employee.emailID' NOT IN (:emails)", { emails: csvresponse.csvEmails })
-                    // .execute();
-                    await appDataSource.manager.query(`UPDATE employee SET "foundInFile" = $1 WHERE employee."emailID" NOT IN ($2)`, [
-                        false,
-                        csvresponse.csvEmails
-                    ]);
+                    await appDataSource
+                    .createQueryBuilder()
+                    .update(Employee)
+                    .set({ "foundInFile":false })
+                    .where("'employee.emailID' NOT IN (:emails)", { emails: csvresponse.csvEmails })
+                    .execute();
+                    // await appDataSource.manager.query(`UPDATE employee SET "foundInFile" = $1 WHERE employee."emailID" NOT IN ($2)`, [
+                    //     false,
+                    //     csvresponse.csvEmails
+                    // ]);
                     let returnObj = await Util.returnObj(csvresponse.csvEmails,statusCodes.success,'Employee','create')
                     return res.json(returnObj)
                     }

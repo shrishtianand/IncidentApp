@@ -55,17 +55,16 @@ export class IncidentController{
         try {
             // const user = await appDataSource.getRepository(Employee).create(req.body)
             const incident = await Util.getbyIDData(Incident,req.body);
-            //logger.info(incident.data[0].IncidentId)
             if(incident.status > 299){
                 return res.json(incident)
             }
             else{
                 let returnObj ;
                 const incidentResponse = await IncidentStatusController.getIncidentStatusByID((incident.data[0]).IncidentId);
-                
-                (incident.data[0]).push(incidentResponse)            
-                returnObj = await Util.returnObj(incident.data,statusCodes.success,'Incident','getall')
-                    
+                (incident.data[0]).incidentResponse = incidentResponse 
+                // const tktStep = await tstep.getCurrentTktStep((incident.data[0]).incidentId);
+                // (incident.data[0]).tktStep = tktStep     
+                returnObj = await Util.returnObj(incident.data,statusCodes.success,'Incident','getall')    
                 return res.json(returnObj)           
             }                
         } catch (error) {

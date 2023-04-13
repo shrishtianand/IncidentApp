@@ -154,6 +154,7 @@ class Utils{
                 }
             }          
         } catch (error) {
+            logger.info(error)
             return {errors:[error],csvEmails:[]}
         }
     }

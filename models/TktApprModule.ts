@@ -21,10 +21,10 @@ export class Tktappr {
 
     @ManyToOne(()=> Processstep, {nullable:true})
     @JoinColumn({name: 'psID'})
-    Process: Processstep;  
+    psID: Processstep;  
 
     @ManyToOne(()=> Incident, {nullable:true})
     @JoinColumn({name: 'incidentId'})
-    Incident: Incident;
+    incidentId: Incident;
     
 }

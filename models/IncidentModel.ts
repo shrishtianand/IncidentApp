@@ -90,7 +90,7 @@ export class Incident {
     @JoinColumn({name: 'incidentId'})
     incidentStatus: Incidentstatus[]
 
-    @OneToMany(() => Tktappr, (tktappr) => tktappr.Incident)
+    @OneToMany(() => Tktappr, (tktappr) => tktappr.incidentId)
     @JoinColumn({name: 'incidentId'})
     tktappr: Tktappr[]
 }

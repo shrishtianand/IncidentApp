@@ -1,3 +1,4 @@
+import { NotBrackets } from 'typeorm/query-builder/NotBrackets';
 import { appDataSource } from '../database/database';
 import { logger } from '../log4';
 import { Processstep } from '../models/ProcessStepModel';
@@ -31,7 +32,7 @@ class TktAppr
     {
         return await appDataSource
                     .createQueryBuilder(TktAppr, "tktappr")
-                    .where("tktappr.status :status", {status : 'NEW'})
+                    .where("tktappr.status : status", {status :  'NEW'})
                     .orderBy("tktappr.psID","ASC")
                     .getOne();
     }
