@@ -45,7 +45,6 @@ export class IncidentStatusController{
     static async getIncidentStatus(incidentId){
         try {
             const incidentStatus = await Util.getLatestStatus(Incidentstatus,{incidentId});
-                console.log(incidentStatus)
                 return incidentStatus       
             }                
          catch (error) {

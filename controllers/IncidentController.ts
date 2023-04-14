@@ -40,14 +40,17 @@ export class IncidentController{
                 let returnObj = await Util.returnObj([incident.data],statusCodes.error,'Incident','getallerr')
                 return res.json(returnObj)
             }
-            else{                 
+            else{  
+                let cnt = 0;               
                 for (let inc of incident.data){
-                    console.log(inc.incidentId)
+
                     const incidentResponse = await IncidentStatusController.getIncidentStatus(inc.incidentId);
-                    if (incidentResponse != null){
-                        inc.currentStatus = incidentResponse[0].status 
+                    if(incidentResponse === null)
+                        (incident.data[cnt]).currentStatus = incidentResponse
+                    else
+                        (incident.data[cnt]).currentStatus = (incidentResponse.data[0]).status
+                    cnt++;
                     }
-                }
                 let returnObj = await Util.returnObj(incident.data,statusCodes.success,'Incident','getall')    
                 return res.json(returnObj)           
             }                
@@ -66,7 +69,6 @@ export class IncidentController{
             }
             else{                
                 const incidentResponse = await IncidentStatusController.getIncidentStatus((incident.data[0]).incidentId);
-                console.log(incidentResponse)
                 if(incidentResponse === null)
                     (incident.data[0]).currentStatus = incidentResponse
                 else
