@@ -15,7 +15,7 @@ export class Incidentstatus {
     @Column("text",{nullable:true})
     changedBy: string    
 
-    @ManyToOne(()=> Incident, {nullable:false})
+    @ManyToOne(()=> Incident, {nullable:true})
     @JoinColumn({name: 'incidentId'})
-    Incident: Incident;
+    incidentId: Incident;
 }

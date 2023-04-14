@@ -16,7 +16,7 @@ export class IncidentStatusController{
             }
             else{
                 const result  = await Util.saveData(Incidentstatus,IncidentStatusController.incidentStatus.data[0])
-                return [result.data]
+                return result.data
             }                    
         } catch (error) {
             let returnObj = await Util.returnObj([error],statusCodes.error,'IncidentStatus','createerr')
@@ -26,7 +26,6 @@ export class IncidentStatusController{
       
     static async getIncidentStatusByID(incidentId){
         try {
-            // const user = await appDataSource.getRepository(Employee).create(req.body)
             const incidentStatus = await Util.getbyIDData(Incidentstatus,incidentId);
             if(incidentStatus.status > 299){
                 let returnObj = await Util.returnObj([incidentStatus.data],statusCodes.error,'IncidentStatus','getallerr')
@@ -34,9 +33,22 @@ export class IncidentStatusController{
             }
             else{
                 let returnObj = await Util.returnObj(incidentStatus.data,statusCodes.success,'IncidentStatus','getall')
-                return returnObj          
+                console.log(returnObj.data)
+                return returnObj.data        
             }                
         } catch (error) {
+            let returnObj = await Util.returnObj([error],statusCodes.error,'IncidentStatus','getallerr')
+            return returnObj        
+        }
+    }
+
+    static async getIncidentStatus(incidentId){
+        try {
+            const incidentStatus = await Util.getLatestStatus(Incidentstatus,{incidentId});
+                console.log(incidentStatus)
+                return incidentStatus       
+            }                
+         catch (error) {
             let returnObj = await Util.returnObj([error],statusCodes.error,'IncidentStatus','getallerr')
             return returnObj        
         }

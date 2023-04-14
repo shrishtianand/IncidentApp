@@ -1,7 +1,6 @@
 // Import the express in typescript file
 import express, { Router } from 'express';
 import { IncidentStatusController } from '../controllers/IncidentStatusController';
-import { validateGetIncidentByID } from '../middleware/validations';
 
 const incidentStatusRouter:Router = express.Router();
 const incStatusObject:IncidentStatusController = new IncidentStatusController();
@@ -13,7 +12,7 @@ const incStatusObject:IncidentStatusController = new IncidentStatusController();
 // incidentStatusRouter.get("/getfiltered",incStatusObject.getFilteredIncidentStatus);
 
 // //purpose:To get a incident by incidentID
-// incidentStatusRouter.get("/getByID",validateGetIncidentByID,incStatusObject.getIncidentByID); 
+incidentStatusRouter.get("/getBystatusID",IncidentStatusController.getIncidentStatusByID); 
 
 //purpose:To delete a incident by incidentID
 //incidentStatusRouter.delete("/delete",validateGetIncidentByID,incObject.deleteIncidentByID); 

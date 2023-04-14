@@ -53,18 +53,16 @@ class TktAppr
                     sendResults.push(result.data)
                 }                  
             } 
-            console.log(sendResults)
             return sendResults
         } 
         catch (error) {
-            console.log(error)
             let returnObj = await Util.returnObj([error],statusCodes.error,'Tktappr','createerr')
             return [returnObj.data]      
         }
     }
 
     async createTktApprReq(incidentId: number, psID: number, tktName: string,tktStatus:string) {
-        return {Incident:incidentId, Process: psID, tktStatus, tktName }
+        return {incidentId,  psID, tktStatus, tktName }
     }
 }
 

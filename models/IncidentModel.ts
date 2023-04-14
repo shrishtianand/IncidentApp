@@ -34,7 +34,7 @@ export class Incident {
     @Column("text",{nullable:true})
     impactPostSeverity: string
 
-    @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
+    @Column({ type: "timestamp", nullable:true })
     reportDateTime: string
 
     @Column("text",{nullable:true})
@@ -86,7 +86,7 @@ export class Incident {
     @OneToMany(() => Attachment, (attachment) => attachment.Incident)
     attachments: Attachment[];
 
-    @OneToMany(() => Incidentstatus, (incidentStatus) => incidentStatus.Incident)
+    @OneToMany(() => Incidentstatus, (incidentStatus) => incidentStatus.incidentId)
     @JoinColumn({name: 'incidentId'})
     incidentStatus: Incidentstatus[]
 
