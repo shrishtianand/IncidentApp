@@ -28,17 +28,19 @@ export class EmployeeController{
     async  getByIDEmployee(req: Request,res: Response){
         try {
             // const user = await appDataSource.getRepository(Employee).create(req.body)
-            const employee = await Util.getbyIDData(Employee,req.body);
+            const lparams = req.params
+            console.log("lparams",lparams);
+            const employee = await Util.getbyIDData(Employee,{empId:lparams.id});
             if(employee.status > 299){
                 return res.json(employee)
             }
             else{
-                let returnObj = await Util.returnObj(employee.data,statusCodes.success,'Employee','getall')
+                let returnObj = await Util.returnObj(employee.data,statusCodes.success,'Employee','getsingle')
                 return res.json(returnObj) 
             }
                     
         } catch (error) {
-            let returnObj = await Util.returnObj([error],statusCodes.error,'Employee','createerr')
+            let returnObj = await Util.returnObj([error],statusCodes.error,'Employee','getsingle')
             return res.json(returnObj)        
         }
     }
