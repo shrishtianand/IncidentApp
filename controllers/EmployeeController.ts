@@ -29,7 +29,6 @@ export class EmployeeController{
         try {
             // const user = await appDataSource.getRepository(Employee).create(req.body)
             const lparams = req.params
-            console.log("lparams",lparams);
             const employee = await Util.getbyIDData(Employee,{empId:lparams.id});
             if(employee.status > 299){
                 return res.json(employee)
