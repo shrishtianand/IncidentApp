@@ -123,10 +123,12 @@ class Utils{
     }
     async getCSVEmails(csvData: Array<any>) {
         try {
-            var returnData = {errors:[],csvEmails:[],depts:''}
+            var returnData = {errors:[],csvEmails:[],depts:'',projects:'',clients:''}
             for await (const data of csvData) {
                 returnData.csvEmails.push(data.emailID)
-                returnData.depts = (data.department.trim() == '') ? returnData.depts+"" : (returnData.depts.search(data.department.trim()) == -1)? returnData.depts+data.department.trim()+',' : returnData.depts+"";
+                returnData.depts = (data.department.trim().toUpperCase() == '') ? returnData.depts+"" : (returnData.depts.search(data.department.trim().toUpperCase()) == -1)? returnData.depts+data.department.trim().toUpperCase()+',' : returnData.depts+"";
+                returnData.projects = (data.project.trim().toUpperCase() == '') ? returnData.projects+"" : (returnData.projects.search(data.project.trim().toUpperCase()) == -1)? returnData.projects+data.project.trim().toUpperCase()+',' : returnData.projects+"";
+                returnData.clients = (data.client.trim().toUpperCase() == '') ? returnData.clients+"" : (returnData.clients.search(data.client.trim().toUpperCase()) == -1)? returnData.clients+data.client.trim().toUpperCase()+',' : returnData.clients+"";
                 const employeeData = await Util.getbyIDData(Employee,{emailID:data.emailID});
                 if(employeeData.status > 299){
                     returnData.errors.push(data.emailID)
@@ -176,7 +178,7 @@ class Utils{
             }          
         } catch (error) {
             logger.info(error)
-            return {errors:[error],csvEmails:[],depts:''}
+            return {errors:[error],csvEmails:[],depts:'',projects:'',clients:''}
         }
     }
 

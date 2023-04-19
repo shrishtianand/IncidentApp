@@ -74,15 +74,37 @@ export class EmployeeController{
             .on('end', async () => {
                 var csvresponse = await Util.getCSVEmails(csvData);
                 var dept = await Util.getbyIDData(Listdatamaster,{lstMstCode:'Dept'});
+                var project = await Util.getbyIDData(Listdatamaster,{lstMstCode:'Project'});
+                var client = await Util.getbyIDData(Listdatamaster,{lstMstCode:'Client'});
                 if((dept.status == 200 && dept.data[0] == null) || dept.status>299){
-                    const lstmaster = await Util.createData(Listdatamaster,{lstMstCode:'Dept',lstMstDesc:csvresponse.depts});
-                    if(lstmaster.status < 299){
-                        await Util.saveData(Listdatamaster,lstmaster.data)
+                    const lstmasterdept = await Util.createData(Listdatamaster,{lstMstCode:'Dept',lstMstDesc:csvresponse.depts});
+                    if(lstmasterdept.status < 299){
+                        await Util.saveData(Listdatamaster,lstmasterdept.data)
                     }
                 }
                 else if(dept.status == 200 && dept.data[0] != null){
                     var newdept = {...dept.data[0],...{lstMstDesc:csvresponse.depts}}
                     await appDataSource.getRepository(Listdatamaster).save(newdept)
+                }
+                if((project.status == 200 && project.data[0] == null) || project.status>299){
+                    const lstmasterproject = await Util.createData(Listdatamaster,{lstMstCode:'Project',lstMstDesc:csvresponse.projects});
+                    if(lstmasterproject.status < 299){
+                        await Util.saveData(Listdatamaster,lstmasterproject.data)
+                    }
+                }
+                else if(project.status == 200 && project.data[0] != null){
+                    var newproject = {...project.data[0],...{lstMstDesc:csvresponse.projects}}
+                    await appDataSource.getRepository(Listdatamaster).save(newproject)
+                }
+                if((client.status == 200 && client.data[0] == null) || client.status>299){
+                    const lstmasterclient = await Util.createData(Listdatamaster,{lstMstCode:'Client',lstMstDesc:csvresponse.clients});
+                    if(lstmasterclient.status < 299){
+                        await Util.saveData(Listdatamaster,lstmasterclient.data)
+                    }
+                }
+                else if(client.status == 200 && client.data[0] != null){
+                    var newclient = {...client.data[0],...{lstMstDesc:csvresponse.clients}}
+                    await appDataSource.getRepository(Listdatamaster).save(newclient)
                 }
                 if(csvresponse.errors.length >0){
                     let returnObj = await Util.returnObj(csvresponse.errors,statusCodes.error,'Employee','createerr')
