@@ -12,8 +12,15 @@ export class ListDataMasterController{
                 return res.json(master)
             }
             else{
-                let returnObj = await Util.returnObj(master.data,statusCodes.success,lparams.id,'getall')
-                return res.json(returnObj) 
+                if(master.data.length >0){
+                    var arrayOfResp = master.data[0].lstMstDesc.split(",").filter(Boolean);;
+                    let returnObj = await Util.returnObj(arrayOfResp,statusCodes.success,lparams.id,'getall')
+                    return res.json(returnObj) 
+                }
+                else{
+                let returnObj = await Util.returnObj([],statusCodes.success,lparams.id,'getall')
+                return res.json(returnObj)
+                } 
             }       
         } catch (error) {
             let returnObj = await Util.returnObj([error],statusCodes.error,lparams.id,'getall')
