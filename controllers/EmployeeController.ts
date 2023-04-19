@@ -5,6 +5,7 @@ import { Util } from '../utility/utils';
 import csv from 'csv-parser';
 import fs from 'fs';
 import { appDataSource } from '../database/database';
+import { Listdatamaster } from '../models/ListDataMasterModule';
 
 export class EmployeeController{
     async  createEmployee(req: Request,res: Response){
@@ -72,6 +73,17 @@ export class EmployeeController{
             })
             .on('end', async () => {
                 var csvresponse = await Util.getCSVEmails(csvData);
+                var dept = await Util.getbyIDData(Listdatamaster,{lstMstCode:'Dept'});
+                if((dept.status == 200 && dept.data[0] == null) || dept.status>299){
+                    const lstmaster = await Util.createData(Listdatamaster,{lstMstCode:'Dept',lstMstDesc:csvresponse.depts});
+                    if(lstmaster.status < 299){
+                        await Util.saveData(Listdatamaster,lstmaster.data)
+                    }
+                }
+                else if(dept.status == 200 && dept.data[0] != null){
+                    var newdept = {...dept.data[0],...{lstMstDesc:csvresponse.depts}}
+                    await appDataSource.getRepository(Listdatamaster).save(newdept)
+                }
                 if(csvresponse.errors.length >0){
                     let returnObj = await Util.returnObj(csvresponse.errors,statusCodes.error,'Employee','createerr')
                     return res.json(returnObj)

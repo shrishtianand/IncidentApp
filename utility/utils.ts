@@ -123,9 +123,10 @@ class Utils{
     }
     async getCSVEmails(csvData: Array<any>) {
         try {
-            var returnData = {errors:[],csvEmails:[]}
+            var returnData = {errors:[],csvEmails:[],depts:''}
             for await (const data of csvData) {
                 returnData.csvEmails.push(data.emailID)
+                returnData.depts = (data.department.trim() == '') ? returnData.depts+"" : (returnData.depts.search(data.department.trim()) == -1)? returnData.depts+data.department.trim()+',' : returnData.depts+"";
                 const employeeData = await Util.getbyIDData(Employee,{emailID:data.emailID});
                 if(employeeData.status > 299){
                     returnData.errors.push(data.emailID)
@@ -175,7 +176,7 @@ class Utils{
             }          
         } catch (error) {
             logger.info(error)
-            return {errors:[error],csvEmails:[]}
+            return {errors:[error],csvEmails:[],depts:''}
         }
     }
 
