@@ -84,7 +84,8 @@ export class EmployeeController{
                 }
                 else if(dept.status == 200 && dept.data[0] != null){
                     var newdept = {...dept.data[0],...{lstMstDesc:csvresponse.depts}}
-                    await appDataSource.getRepository(Listdatamaster).save(newdept)
+                    await Util.saveData(Listdatamaster,newdept)
+                    // await appDataSource.getRepository(Listdatamaster).save(newdept)
                 }
                 if((project.status == 200 && project.data[0] == null) || project.status>299){
                     const lstmasterproject = await Util.createData(Listdatamaster,{lstMstCode:'Project',lstMstDesc:csvresponse.projects});
@@ -94,7 +95,8 @@ export class EmployeeController{
                 }
                 else if(project.status == 200 && project.data[0] != null){
                     var newproject = {...project.data[0],...{lstMstDesc:csvresponse.projects}}
-                    await appDataSource.getRepository(Listdatamaster).save(newproject)
+                    await Util.saveData(Listdatamaster,newproject)
+                    // await appDataSource.getRepository(Listdatamaster).save(newproject)
                 }
                 if((client.status == 200 && client.data[0] == null) || client.status>299){
                     const lstmasterclient = await Util.createData(Listdatamaster,{lstMstCode:'Client',lstMstDesc:csvresponse.clients});
@@ -104,7 +106,8 @@ export class EmployeeController{
                 }
                 else if(client.status == 200 && client.data[0] != null){
                     var newclient = {...client.data[0],...{lstMstDesc:csvresponse.clients}}
-                    await appDataSource.getRepository(Listdatamaster).save(newclient)
+                    await Util.saveData(Listdatamaster,newclient)
+                    // await appDataSource.getRepository(Listdatamaster).save(newclient)
                 }
                 if(csvresponse.errors.length >0){
                     let returnObj = await Util.returnObj(csvresponse.errors,statusCodes.error,'Employee','createerr')
