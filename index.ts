@@ -11,6 +11,7 @@ import incStatusRoute from './routes/IncidentStatusRoute';
 import { appDataSource } from './database/database';
 import attachmentRouter from './routes/AttachmentRouter';
 import masterRouter from './routes/ListDataMasterRouter';
+import { statusCodes } from './utility/constants';
 var fName:string;
 
 fileName(__filename).then((data)=>{
@@ -60,6 +61,14 @@ app.use("/incident",incidentRouter);
 app.use('/incstatus',incStatusRoute);
 app.use('/incident',attachmentRouter);
 app.use('/master',masterRouter);
+
+app.use((req, res) => {
+    return res.json({
+        code: statusCodes.error,
+        message: "Route Not Found",
+        data: null
+    })
+})
 // Server setup
 app.listen(gport, () => {
     logger.info(`${fName} TypeScript with Express
