@@ -63,6 +63,21 @@ export class EmployeeController{
         }
     }
 
+    async getDeptByEmail(req: Request,res: Response){
+        try {
+            var employee = []
+            const lquery = req.params
+            var email = (lquery.id == undefined || lquery.id == "undefined" || lquery.id == null) ? "" : lquery.id;
+            employee = await appDataSource.manager.query(`select department,emailID FROM incident.employee where emailID LIKE '%${email}%'`, []);
+            var returnData = JSON.parse(JSON.stringify(employee));
+            let returnObj = await Util.returnObj(returnData,statusCodes.success,'Employee','getall')
+            return res.json(returnObj)            
+        } catch (error) {
+            let returnObj = await Util.returnObj([error],statusCodes.error,'Employee','getallerr')
+            return res.json(returnObj)        
+        }
+    }
+
     async saveEmployeesFromFile(req: Request,res: Response) {
         try {
             let csvData = [];

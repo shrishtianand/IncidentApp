@@ -25,5 +25,6 @@ const upload = multer({ storage: storage })
 empRouter.post("/create",validateCreateEmployee,empObject.createEmployee); //purpose:To create a employee
 empRouter.get("/get",empObject.getAllEmployee);
 empRouter.get("/getByID/:id",empObject.getByIDEmployee);
+empRouter.get("/getDeptByEmail/:id",empObject.getDeptByEmail);
 empRouter.post("/saveEmployeesFromFile",upload.single('document'),empObject.saveEmployeesFromFile); //purpose:To create a employee from input file
 export default empRouter;
