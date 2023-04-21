@@ -53,7 +53,7 @@ export class EmployeeController{
             var project = (lquery.project == undefined || lquery.project == "undefined" || lquery.project == null) ? "" : lquery.project;
             var client = (lquery.client == undefined || lquery.client == "undefined" || lquery.client == null) ? "" : lquery.client;
             var dept = (lquery.dept == undefined || lquery.dept == "undefined" || lquery.dept == null) ? "" : lquery.dept;
-            employee = await appDataSource.manager.query(`select * FROM incident.employee where (firstName LIKE '%${empname}%' or lastName LIKE '%${empname}%') and project LIKE '%${project}%' and client LIKE '%${client}%' and department LIKE '%${dept}%'`, []);
+            employee = await appDataSource.manager.query(`select * FROM incident.employee where (firstName LIKE '%${empname}%' or lastName LIKE '%${empname}%' or empId LIKE '%${empname}%') and project LIKE '%${project}%' and client LIKE '%${client}%' and department LIKE '%${dept}%'`, []);
             var returnData = JSON.parse(JSON.stringify(employee));
             let returnObj = await Util.returnObj(returnData,statusCodes.success,'Employee','getall')
             return res.json(returnObj)            
