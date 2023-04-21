@@ -19,6 +19,7 @@ class Utils{
             logger.info(`${this.fName} : Successfully created record for : ${modelName}`);
             return returnObject;
         } catch (error) {
+            console.log("error",error)
             logger.info(`${this.fName} : Error creating record for : ${modelName}`);
             let returnObject = this.returnObj([error],statusCodes.error,modelName,'createerr');
             logger.info(error)
@@ -123,12 +124,11 @@ class Utils{
     }
     async getCSVEmails(csvData: Array<any>) {
         try {
-            var returnData = {errors:[],csvEmails:[],depts:'',projects:'',clients:''}
+            var returnData = {errors:[],csvEmails:[],depts:''}
+
             for await (const data of csvData) {
                 returnData.csvEmails.push(data.emailID)
                 returnData.depts = (data.department.trim().toUpperCase() == '') ? returnData.depts+"" : (returnData.depts.search(data.department.trim().toUpperCase()) == -1)? returnData.depts+data.department.trim().toUpperCase()+',' : returnData.depts+"";
-                returnData.projects = (data.project.trim().toUpperCase() == '') ? returnData.projects+"" : (returnData.projects.search(data.project.trim().toUpperCase()) == -1)? returnData.projects+data.project.trim().toUpperCase()+',' : returnData.projects+"";
-                returnData.clients = (data.client.trim().toUpperCase() == '') ? returnData.clients+"" : (returnData.clients.search(data.client.trim().toUpperCase()) == -1)? returnData.clients+data.client.trim().toUpperCase()+',' : returnData.clients+"";
                 const employeeData = await Util.getbyIDData(Employee,{emailID:data.emailID});
                 if(employeeData.status > 299){
                     returnData.errors.push(data.emailID)
@@ -154,11 +154,9 @@ class Utils{
                 else if(employeeData.status == 200 && employeeData.data[0] != null){
                     let updateData = {
                         ...employeeData.data[0],
-                        firstName:data.firstName,
-                        lastName:data.lastName,
+                        name:data.name,
                         department:data.department,
-                        client:data.client,
-                        project:data.project,
+                        manager:data.manager,
                         foundInFile:true
                     }
                     const result = await Util.saveData(Employee,updateData)
@@ -178,7 +176,7 @@ class Utils{
             }          
         } catch (error) {
             logger.info(error)
-            return {errors:[error],csvEmails:[],depts:'',projects:'',clients:''}
+            return {errors:[error],csvEmails:[],depts:''}
         }
     }
 

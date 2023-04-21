@@ -18,8 +18,7 @@ let empMessages = {
     empSaveError: 'Error while saving employee',
     empDeleteError: 'Error while deleting employee',
     empCreateError: 'Error while creating employee',
-    empFNameRequired: 'first name is required',
-    empLNameRequired: 'last name name is required',
+    empNameRequired: 'name is required',
     empEmailIDRequired: 'email id is required',
     empDepartmentRequired: 'department is required',
     empClientRequired: 'client is required',
@@ -54,7 +53,15 @@ let defaultMessages = {
     getsingle: ' details'
 }
 
-let csvColumns = ['firstName', 'lastName','emailID','department','client','project','managerID'];
+let csvColumns = ['Employee Code','Employee Name','Department','Project Manager','Email'];
+
+let csvMapObject = {
+    'Employee Code': 'empId',
+    'Employee Name': 'name',
+    'Department': 'department',
+    'Project Manager': 'manager',
+    'Email': 'emailID'
+}
 
 type  returnObject = {
     status: number,
@@ -69,6 +76,6 @@ export {
     incMessages,
     defaultMessages,
     csvColumns,
-    returnObject
-
+    returnObject,
+    csvMapObject
 }
