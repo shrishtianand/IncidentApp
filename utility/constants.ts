@@ -56,7 +56,7 @@ let defaultMessages = {
 let csvColumns = ['Employee Code','Employee Name','Department','Project Manager','Email'];
 
 let csvMapObject = {
-    'Employee Code': 'empId',
+    'Employee Code': 'empMSDId',
     'Employee Name': 'name',
     'Department': 'department',
     'Project Manager': 'manager',

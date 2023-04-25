@@ -8,7 +8,7 @@ async function validateCreateEmployee(req: Request,res: Response, next: NextFunc
         name: Joi.string().required().label(empMessages.empNameRequired),
         emailID: Joi.string().email({ minDomainSegments: 2,tlds:{allow:['com']}}).required().label(empMessages.empEmailIDRequired),
         department: Joi.string().required().label(empMessages.empDepartmentRequired),
-        empId: Joi.string().required().label(empMessages.empProjectRequired),
+        empMSDId: Joi.string().required().label(empMessages.empProjectRequired),
         manager: Joi.string().required().label(empMessages.empManagerIDRequired)
     }).options({abortEarly:false});
     let lresponse = lJoiSchema.validate(ldata,{abortEarly:false});

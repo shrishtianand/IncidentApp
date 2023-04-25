@@ -51,7 +51,7 @@ export class EmployeeController{
             const lquery = req.query
             var empname = (lquery.empname == undefined || lquery.empname == "undefined" || lquery.empname == null) ? "" : lquery.empname;
             var dept = (lquery.dept == undefined || lquery.dept == "undefined" || lquery.dept == null) ? "" : lquery.dept;
-            employee = await appDataSource.manager.query(`select * FROM incident.employee where (name LIKE '%${empname}%' or empId LIKE '%${empname}%') and department LIKE '%${dept}%'`, []);
+            employee = await appDataSource.manager.query(`select * FROM incident.employee where (name LIKE '%${empname}%' or empMSDId LIKE '%${empname}%') and department LIKE '%${dept}%'`, []);
             var returnData = JSON.parse(JSON.stringify(employee));
             let returnObj = await Util.returnObj(returnData,statusCodes.success,'Employee','getall')
             return res.json(returnObj)            

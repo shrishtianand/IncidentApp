@@ -157,7 +157,8 @@ class Utils{
                         name:data.name,
                         department:data.department,
                         manager:data.manager,
-                        foundInFile:true
+                        foundInFile:true,
+                        empMSDId:data.empMSDId
                     }
                     const result = await Util.saveData(Employee,updateData)
                     if(result.status > 299){
