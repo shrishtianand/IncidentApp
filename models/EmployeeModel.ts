@@ -25,6 +25,6 @@ export class Employee {
     @Column("varchar")
     manager: string
     
-    @OneToMany(() => Incident,incident => incident.employee)
+    @OneToMany(() => Incident,incident => incident.empId)
     incident:Incident[]
 }
