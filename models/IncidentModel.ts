@@ -81,7 +81,7 @@ export class Incident {
 
     @ManyToOne(()=> Employee, {nullable:true})
     @JoinColumn({name:'empId'})
-    employee:Employee
+    empId:Employee
 
     @OneToMany(() => Attachment, (attachment) => attachment.Incident)
     attachments: Attachment[];
